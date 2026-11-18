@@ -1,0 +1,37 @@
+route_order,state_or_ut,type,districts_as_of_2026-11-18,count_status,evidence_and_notes,sources
+1,Ladakh,UT,8,Verified,"Was 2 (Leh, Kargil). 5 new districts notified 27 Apr 2026 (Nubra, Sham, Changthang from Leh; Zanskar, Drass from Kargil). Sankoo (from Kargil) notified 16 Oct 2026, S.O. 284.",D04; D05; D06; D07
+2,Jammu and Kashmir,UT,20,Partially verified,No change found; boundary freeze in force (1 Jan 2026 - 31 Mar 2027).,D24; D31; D32
+3,Himachal Pradesh,State,12,Partially verified,No change found; secondary compilations agree.,D24; D31; D32
+4,Punjab,State,23,Partially verified,Malerkotla (2021) was the last addition; compilations agree.,D31; D32
+5,Chandigarh,UT,1,Partially verified,Single district UT.,D31; D32
+6,Haryana,State,23,Verified,"Hansi carved from Hisar: cabinet 17 Dec 2025, notification ~22 Dec 2025.",D12; D13
+7,Delhi (NCT),UT,13,Verified,"Revenue districts reorganised 11 -> 13 from 1 Jan 2026 (Shahdara abolished; Old Delhi, Central North, Outer North created).",D08; D09
+8,Uttarakhand,State,13,Partially verified,4 districts announced in 2011 were never notified; some compilations wrongly list 17.,D31; D32
+9,Uttar Pradesh,State,75,Partially verified,No change found.,D31; D32
+10,Bihar,State,38,Partially verified,No change found.,D31; D32
+11,Jharkhand,State,24,Partially verified,State ordered a boundary freeze 1 Jan 2026 - 31 Mar 2027.,D25; D31
+12,West Bengal,State,23,Partially verified,2026-27 state budget PROPOSES 5 new districts (incl. Kolkata as a full revenue district) -> 28; not notified as of this check. Earlier 2022 plan for 7 districts was never notified.,D28; D31
+13,Sikkim,State,6,Partially verified,Pakyong and Soreng (2021) were the last additions.,D31; D32
+14,Assam,State,35,Verified,4 districts merged Dec 2022 were recreated by cabinet decision 25 Aug 2023 -> 35. Co-districts are a separate tier and not counted.,D26; D31
+15,Meghalaya,State,12,Partially verified,"Eastern West Khasi Hills (Mairang, 2021) was the last addition.",D31; D32
+16,Tripura,State,8,Partially verified,Compilations agree.,D31; D32
+17,Mizoram,State,11,Partially verified,Compilations agree.,D31; D32
+18,Manipur,State,16,Partially verified,Compilations agree.,D31; D32
+19,Nagaland,State,17,Verified,Meluri (from Phek) notified 2 Nov 2024 as 17th district; inaugurated Feb 2025.,D19; D20
+20,Arunachal Pradesh,State,28,Partially verified,Keyi Panyor and Bichom created 2024 (Assembly bill 8 Feb 2024). 28 counts Itanagar Capital Complex as a district; 27 without it.,D27
+21,Odisha,State,30,Partially verified,No change found.,D31; D32
+22,Chhattisgarh,State,33,Verified,"Reached 33 in Sep 2022 (Manendragarh-Chirmiri-Bharatpur, Sakti); no 34th found.",D21; D31
+23,Telangana,State,33,Partially verified,"Dec 2025 'Future City' is a police commissionerate, not a district.",D31; D32
+24,Andhra Pradesh,State,28,Verified,"Polavaram and Markapuram created (notification 30/31 Dec 2025): 26 -> 28. Madanapalle, earlier proposed, was dropped.",D01; D02; D03
+25,Puducherry,UT,2,Verified,"2 administrative districts (Puducherry, Karaikal). Mahe and Yanam are census districts inside Puducherry district; the series gives them their own episodes (4 episodes total).",D29
+26,Tamil Nadu,State,38,Partially verified,No change found since 2020.,D31; D32
+27,Andaman and Nicobar Islands,UT,3,Partially verified,"Nicobar, North & Middle Andaman, South Andaman.",D31; D32
+28,Kerala,State,14,Verified,No change; all sources agree. Names listed in kerala-food-table.,D31; D32
+29,Lakshadweep,UT,1,Partially verified,Single district UT.,D31; D32
+30,Karnataka,State,31,Verified,Count unchanged; Ramanagara renamed Bengaluru South (notification May 2025).,D16; D31
+31,Goa,State,3,Verified,"Kushavati (from South Goa: Dharbandora, Quepem, Sanguem, Canacona) notified 31 Dec 2025, HQ Quepem.",D10; D11
+32,Maharashtra,State,36,Partially verified,"Count unchanged (several renames since 2023, e.g. Chhatrapati Sambhajinagar, Dharashiv, Ahilyanagar - to be confirmed from LGD).",D31; D32
+33,Dadra and Nagar Haveli and Daman and Diu,UT,3,Partially verified,"Dadra & Nagar Haveli, Daman, Diu.",D31; D32
+34,Gujarat,State,34,Verified,"Vav-Tharad carved from Banaskantha: notified 25 Sep 2025, effective 2 Oct 2025.",D14; D15
+35,Rajasthan,State,41,Verified,9 of the 2023 districts dissolved by cabinet 28 Dec 2024 (50 -> 41).,D17; D18
+36,Madhya Pradesh,State,55,Verified,"Mauganj, Pandhurna, Maihar (2023) -> 55. CM announced Pichhore (Shivpuri) on 13 Nov 2026 - NOT yet notified (census freeze).",D22; D23; D30
