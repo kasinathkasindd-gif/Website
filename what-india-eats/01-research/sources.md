@@ -96,6 +96,32 @@ Same-publisher pages count as **one** source.
 
 > Note: S71, S74 and S65 are tertiary. Rows that rest mainly on them are marked **Partially verified** and must be confirmed by a local reviewer.
 
+## Food: Ladakh season (S82–S100, added 18 Nov 2026)
+
+| ID | Tier | Source | URL |
+|---|---|---|---|
+| S82 | B | Hussain, Spaldon & Tundup (2022), "Traditional food systems of Changthang, Ladakh", *Indian J. Traditional Knowledge* 21(3):625–636 | https://krishi.icar.gov.in/ohs-2.3.1/index.php/record/view/675352 |
+| S83 | A | UNDP India: Changpa herders and cashmere ("Perhaps we made the mountain god angry") | https://www.undp.org/india/perhaps-we-made-mountain-god-angry |
+| S84 | C | Mint: "Eat like a local under the stars in Turtuk" (via Magzter) | https://www.magzter.com/en/stories/newspaper/Mint-Bangalore/EAT-LIKE-A-LOCAL-UNDER-THE-STARS-IN-TURTUK |
+| S85 | C | Hindustan Times Brunch (2017): "A chef goes foraging in Ladakh" (via PressReader) | https://www.pressreader.com/india/hindustan-times-brunch/20171105/281479276686976 |
+| S86 | C | The Statesman: Ladakh's first GI tag for Raktsey Karpo apricot | https://www.thestatesman.com/india/ladakh-got-its-first-gi-tag-for-its-famous-raktsey-karpo-apricot-1503139506.html |
+| S87 | C | Rural Voice: Ladakh's Raktsey Karpo apricot gets GI tag | https://eng.ruralvoice.in/ladakh-raktsey-karpo-apricot-gets-gi-tag |
+| S88 | C | Dialogue Earth: Ladakh's apricot lifeline challenged by a changing climate | https://dialogue.earth/en/climate/ladakhs-apricot-lifeline-challenged-by-a-changing-climate/ |
+| S89 | A | Kargil district administration: apricot area and production | https://kargil.nic.in/?p=28428 |
+| S90 | C | Krishi Jagran: Kargil apricots enter national markets | https://www.krishijagran.com/news/fresh-kargil-apricots-enter-national-markets-boosting-local-agriculture-to-new-heights/ |
+| S91 | C | Reach Ladakh: Kargil hosts the Mamani ethnic food festival | https://reachladakh.com/news/social-news/kargil-hosts-ethnic-mamani-food-festival-to-promote-traditional-cuisine |
+| S92 | A | Utsav (Govt of India): Mamani, the ethnic food festival | https://utsav.gov.in/view-event/mamani-the-ethnic-food-festival-1 |
+| S93 | C | Scroll: marzan and papa (Suru valley, Styankyung) | https://scroll.in/article/1092855/scroll_in |
+| S94 | A | J&K Tourism Development Corporation: About Ladakh cuisine (paba, tangtur) | https://jktdc.co.in/info.aspx?id=141 |
+| S95 | C | Reach Ladakh (op-ed): Importance and preservation of Ladakhi dishes | https://reachladakh.com/news/oped-page/importance-and-preservation-of-ladakhi-dishes |
+| S96 | C | Countercurrents (2026): Drass, the Dard-Shina crown of Ladakh | https://countercurrents.org/2026/09/drass-the-dard-shina-crown-of-ladakh/ |
+| S97 | B | ICAR repository: Traditional methods for vegetable and grain storage in Leh district | https://krishi.icar.gov.in/ohs-2.3.1/index.php/record/view/878766 |
+| S98 | C | Goya: The cuisine of the monks of Zanskar | https://www.goya.in/blog/the-fascinating-himalayan-cuisine-of-the-monks-of-zanskar |
+| S99 | C | Reach Ladakh (2026): "Stories from a Kargili Kitchen" released | https://reachladakh.com/news/art-culture-and-languages/stories-from-a-kargili-kitchen-released-in-kargil |
+| S100 | E | Slurrp: Paba, the Ladakhi boiled bread (pointer only) | https://www.slurrp.com/article/paba-the-ladakhi-boiled-bread-on-the-verge-of-extinction-recipe-inside-1675077295243 |
+
+> Independence note: two different peer-reviewed studies (e.g. S68 and S82) count as two sources even when they appear in the same journal. The same-publisher rule applies to editorial and tourism content.
+
 ## District counts (D01–D32)
 
 | ID | Source | URL |

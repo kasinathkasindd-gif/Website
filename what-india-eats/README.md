@@ -10,7 +10,8 @@
 | Hero design | ✅ **Vector Seetu approved**, 0 credits ([sheet](library/seetu/seetu-sheet.png)) |
 | Pilot EP001 Leh | ✅ **Silent animatic built**, 0 credits: [`pilot/renders/ep001-leh-animatic.mp4`](pilot/renders/ep001-leh-animatic.mp4) · [key frames](pilot/renders/ep001-contact-sheet.png) · [how to rebuild](pilot/README.md) |
 | Voice | ⏳ To choose after you review the animatic |
-| Ladakh season (the other 7 districts) | ⏳ Research + local reviewer next |
+| Ladakh season research (all 8 districts) | ✅ Done: [`01-research/ladakh-food-table.md`](01-research/ladakh-food-table.md) (1 dish row Verified, 23 Partially verified; local reviewer needed, especially for Drass and Sankoo) |
+| 3D Seetu + voice-over | 💳 Budget quoted: [`06-production/3d-and-voice-budget.md`](06-production/3d-and-voice-budget.md). Waiting for credits |
 
 ## What's in here
 

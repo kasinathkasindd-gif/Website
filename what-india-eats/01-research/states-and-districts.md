@@ -74,7 +74,7 @@ Alphabetical order was rejected because it jumps across the country (Andhra → 
 
 **Kerala (14, route order south → north):** Thiruvananthapuram, Kollam, Pathanamthitta, Alappuzha, Kottayam, Idukki, Ernakulam, Thrissur, Palakkad, Malappuram, Kozhikode, Wayanad, Kannur, Kasaragod.
 
-**Ladakh (8):** Leh, Changthang, Nubra, Sham, Kargil, Drass, Sankoo, Zanskar.
+**Ladakh (8):** Leh, Changthang, Nubra, Sham, Kargil, Drass, Sankoo, Zanskar. Food research for all 8 is in `ladakh-food-table.md`.
 - This is the proposed route order. It exits from Zanskar towards Kishtwar in J&K.
 - Check adjacency on the official map before locking it.
 
