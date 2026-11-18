@@ -2,6 +2,11 @@
 
 Full creative bible: `what-india-eats/02-character/character-bible.md`. This file holds what generation and animation need.
 
+**Canonical source (approved 18 Nov 2026): the vector rig.**
+- Design sheet and generator: `what-india-eats/library/seetu/build_seetu.py`
+- Animatable React component: `what-india-eats/pilot/src/Seetu.tsx`, with props for eyes, brows, mouth, arms, walk, lidLift/lidTilt, steam, flush, blink, look and squash.
+- The AI prompt blocks below are kept only for optional painted key art. Use the rig sheet as the reference image.
+
 ## Identity in one line
 Seetu: a 32-"cooker-year"-old living aluminium pressure cooker who eats breakfast, lunch and dinner with a family in every district of India and whistles once per meal. Gender unspecified. Light, natural Indian-English voice. Catchphrase: **"Three whistles — done!"**
 

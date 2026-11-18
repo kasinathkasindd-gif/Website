@@ -1,5 +1,7 @@
 # Character bible: SEETU, the pressure cooker who whistles for every meal in India
 
+> **Status (18 Nov 2026): design APPROVED as a vector rig drawn in code, at 0 credits.** Source: `what-india-eats/library/seetu/build_seetu.py` (design sheet `seetu-sheet.png`) and the animatable component `what-india-eats/pilot/src/Seetu.tsx`. Every pose and expression is a parameter set, not a generated image.
+
 > **Logline:** A 32-year-old pressure cooker leaves the family kitchen shelf to eat breakfast, lunch and dinner with a family in every district of India, and whistles once for every meal.
 
 I designed Seetu from scratch for this series. It is not based on any existing character, mascot, brand or real person (see the originality check at the end). It is a stylised, generic kitchen object: no brand logos, no brand colours, no brand jingles.
@@ -211,3 +213,5 @@ The AI and recording setup is in `05-sound/sound-guide.md` §4.
 20. Waving goodbye, back three-quarter view
 
 Mouth shapes, blinks, brows and steam are drawn as SVG layers in code, so they cost **0 credits** and can lip-flap in time with the voice.
+
+**Since the vector rig was approved, the 20 poses above are parameter presets in `Seetu.tsx`** (eyes, brows, mouth, arms, walk, lid-pop, steam, flush), so they don't need generating. AI generation stays optional, for example a painted key-art poster.

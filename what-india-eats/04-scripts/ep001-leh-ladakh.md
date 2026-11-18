@@ -24,18 +24,20 @@
 
 | Time | Shot | Visual | Seetu pose | On-screen text | VO | Audio |
 |---|---|---|---|---|---|---|
-| 0.0–1.8 | 1 HOOK | Hard cut: a steel cup of pale-pink butter tea, steam rising; Seetu's lid pops beside it, eyes snap to the camera | #3 lid-pop | **SALTY TEA?!** | "Breakfast here is… *salty* tea." | **WHEET!** + steam burst |
+| 0.0–1.8 | 1 HOOK | Hard cut: a cup of creamy beige butter tea, steam rising (not pink: pink salt tea is Kashmiri noon chai, a different drink); Seetu's lid pops beside it, eyes snap to the camera | #3 lid-pop | **SALTY TEA?!** | "Breakfast here is… *salty* tea." | **WHEET!** + steam burst |
 | 1.8–5.5 | 2 Intro | Map of India; Seetu hops onto the very top; dotted route appears | #2 wave | **District 1 / 793** | "I'm Seetu, a pressure cooker, and I'm eating with a family in every district of India. Stop one: Leh, Ladakh!" | Map whoosh, stamp |
-| 5.5–7.5 | 3 Arrival | Shared jeep rattles in front of brown mountains and a white stupa; Seetu tumbles out | #17/#18 walk | 📍 Leh, Ladakh · 🇮🇳 | (cont.) | Engine sputter, wind |
+| 5.5–7.5 | 3 Arrival | Shared jeep rattles in front of brown mountains and a whitewashed flat-roof house; Seetu pops out and lands on the jeep roof | #17/#18 walk | 📍 Leh, Ladakh · 🇮🇳 | (cont.) | Engine sputter, wind |
 | 7.5–10.5 | 4 Breakfast A | Ladakhi kitchen: brass and copper shelves, iron stove; a hand churns tea in a tall wooden churn | #7 sniff | ☀️ BREAKFAST | "Many homes start with gur-gur cha: tea churned with butter and salt…" | Breakfast bed (soft drone + bells); churn thuds |
 | 10.5–13.5 | 5 Breakfast B | Tea poured onto roasted barley flour; a hand kneads it into a dough ball; khambir bread beside it | #6 point down | Card: **[Bhoti script: reviewer to supply] · kholak** · barley dough made with tea | "…with khambir bread, or kholak: roasted barley mixed right into the tea. No cooking. Fuel is precious up here." | Kneading squish |
 | 13.5–15 | 6 Spice | Steam-o-meter shows **0 puffs**; Seetu taps it, puzzled | #12 squint | ♨️ 0 | "Spice? Zero puffs." | A dry 'pfft' — the joke is that no steam comes; then the meal-1 whistle |
-| 15–21 | 7 Lunch | Pressure cooker (a cousin, wink) whistles; rice, dal and potato-turnip sabzi plated on steel | #9 delighted | 🍚 LUNCH · Card: **daal-chawal** · rice & lentils | "Lunch in many homes? Rice, dal and vegetables." | Lunch bed (hand percussion); cousin-cooker whistle ×2 |
+| 15–21 | 7 Lunch | Pressure cooker (a cousin, wink) whistles; rice, dal and potato-turnip sabzi plated on steel | #9 delighted | 🍚 LUNCH · Card: **daal-chawal** · rice & lentils | "Lunch in many homes? Rice, dal and vegetables." | Lunch bed (hand percussion); cousin-cooker whistle once (lower, breathy, so it isn't confused with the meal counter); meal-2 whistle (B5) at the end |
 | 21–24.5 | 8 Guests gag | Seetu squints at the plate: "Every day… or just for guests?" Host's hand waves "every day!"; the extra-helping ladle sneaks more rice | #12 squint → #13 refuse → #14 give in | — | "Every day… or just for guests?" — "Every day!" — "No no no… okay. Just one more." | Ladle clink |
 | 24.5–31 | 9 Dinner | Night window, snow outside; a bowl of thukpa with hand-pulled noodles; Seetu warms his mitts on it | #19 sit | 🌙 DINNER · Card: **[Bhoti script: reviewer to supply] · thukpa** · noodle soup | "Dinner: a steaming bowl of thukpa, noodle soup with vegetables, sometimes meat. Up here, hot soup isn't a treat. It's survival." | Dinner bed (bansuri-like pad); wind howl; 3rd-meal whistle |
 | 31–39.5 | 10 FACT | Lid-pop; split visual: an old sack of barley vs a modern sack of rice, with an arrow and "then → now" | #3 lid-pop | Fact card: **Rice was a luxury here. Now it's everyday.** · *Dame & Nüsser, Food Security, 2011* | "Mind blown: researchers found rice used to be a luxury in Ladakh. Today, cheap subsidised rice from the plains is everyday food, and local barley is fading." | Music ducks; riser; "ding" |
 | 39.5–44 | 11 Cliffhanger | Seetu stamps the map; the counter ticks 1 → next; a silhouette of a yak on a high plateau | #16 stamp | **Next: Changthang** | "Three whistles — done! Just one more… Changthang!" | 3-whistle sting (sonic logo) + stamp thud |
 | 44–46 | 12 Loop | A steaming cup, matching frame 1 for a seamless loop | — | **Follow the journey →** | — | Steam hiss into the loop |
+
+**Built as a silent animatic on 18 Nov 2026:** `what-india-eats/pilot/renders/ep001-leh-animatic.mp4`. Meal whistles are single rising notes (G5 after breakfast, B5 after lunch, D6 after dinner); the closing sting plays all three.
 
 ## Clean VO (for TTS or recording)
 

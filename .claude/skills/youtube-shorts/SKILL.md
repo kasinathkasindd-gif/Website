@@ -3,7 +3,7 @@ name: youtube-shorts
 description: Produce a fact-checked, low-credit 9:16 YouTube Shorts series end to end — research and verify, script, generate assets on Higgsfield, voice, animate in Remotion, QA, upload and cross-post. Default series is "What India Eats" (one Short per Indian district, breakfast→lunch→dinner, hosted by the original mascot Seetu the pressure cooker), but every stage is reusable for any fact-based Shorts series. Use when the user asks for the next episode, a district/state episode, research for an episode, a script, assets, voice, an edit, an upload pack, a season plan, or says "What India Eats" or "Seetu".
 ---
 
-# YouTube Shorts series skill (draft v0.1, awaiting approval)
+# YouTube Shorts series skill (v0.2: plan approved, vector-first pilot built)
 
 This skill runs **one pipeline**: research → verify → script → assets → voice → edit → QA → upload → learn.
 
@@ -27,7 +27,9 @@ Accuracy comes first, then virality, then cost. When they conflict, follow that 
    - No religious or political costumes or symbols as gags.
    - Name communities only as sources do.
    - Festival food is labelled as festival food.
-7. **Stop at gates.** The user approves:
+7. **No national-border maps of India** unless they use official Survey of India boundaries. Use abstract route graphics instead (as the pilot does).
+8. **Vector-first.** Draw the character, scenes and food in code at 0 credits (template: `what-india-eats/pilot/`). AI generation is optional and always quoted first.
+9. **Stop at gates.** The user approves:
    - the hero character design
    - each state's data table
    - each batch's credit quote
@@ -41,10 +43,10 @@ Accuracy comes first, then virality, then cost. When they conflict, follow that 
 | 1. Research | Lock the state's district list (LGD export + notifications since); find a state baseline; run district searches by source tier | Rows in `research/<state>-food-table.csv` | `references/verification-checklist.md` |
 | 2. Verify | 2-independent-source rule; contradiction pass; sensitivity pass; local reviewer sign-off where needed | Every row has a status + Data basis + sources | `references/verification-checklist.md` |
 | 3. Script | Fill the fixed episode template; 115–130 words; fact-check table with row IDs; variety rule (change ≥3 of 6 elements vs the last episode) | `scripts/epNNN-<district>.md` | `references/episode-template.md` |
-| 4. Assets | Reuse the library first. Generate only new dish stills and backgrounds; quote → approve → batch → save prompts and job ids | `assets/` + `prompts.md` | `references/character-bible.md`, `references/low-credit-rules.md` |
+| 4. Assets | **Vector-first:** reuse the Seetu rig (`pilot/src/Seetu.tsx`) and draw new scenes and food as SVG components from the data-table descriptions (0 credits). Generate AI stills only if the user wants painted close-ups; then quote → approve → batch → save prompts and job ids | `src/scenes/*.tsx` (+ `prompts.md` if AI is used) | `references/character-bible.md`, `references/low-credit-rules.md` |
 | 5. Voice | Human recording (preferred) or cloned voice through Qwen TTS; pronunciation respellings; measure timings | `vo/take1.wav` + `timing.ts` | `references/sound-guide.md` |
-| 6. Edit / animate | Remotion cut-out animation: sprites placed by anatomy anchors, SVG faces, Steam-o-meter, cards, map; sound cue list; loop the last frame to the first | Preview 540×960 | `anthropic-skills:cutout-cartoon-shorts` (pipeline details) |
-| 7. QA | Fact-check table re-read against the final cut; safe zones; caption sync; loudness −14 LUFS; pop scan; contact sheet | Final 1080×1920 MP4 | `references/verification-checklist.md` §QA |
+| 6. Edit / animate | Copy `what-india-eats/pilot/` as the template: `Ep001.tsx` (shots + caption cues + sound cues), `make_audio.py` (original sounds), `render.cjs` (stills / preview / final). Keep faces and food out of the caption band (y ≈ 1250–1460) and text out of the bottom 20% and right 12% | Preview 540×960 | `what-india-eats/pilot/README.md` |
+| 7. QA | Fact-check table re-read against the final cut. Then: contact sheet of key stills; pop scan (`ffmpeg select='gt(scene,0.18)'`, only at planned cuts); safe zones; caption sync; master with `scripts/master.py` (−14 LUFS, ≤ −1.5 dBTP) | Final 1080×1920 MP4 | `references/verification-checklist.md` §QA |
 | 8. Upload | Title / description / sources / hashtags / pinned question / playlist / related video / disclosure; then IG + FB native uploads | Upload pack `upload.md` | `references/upload-checklist.md` |
 | 9. Learn | After 48 h and 7 days: retention graph, swipe-away rate, top geographies, comments → corrections queue | `log.md` row | `references/upload-checklist.md` §Learn |
 
@@ -83,4 +85,5 @@ series/what-india-eats/
   - Hook 0–2 s → arrival → breakfast → lunch → dinner → unique fact → cliffhanger.
   - Whistle counts 1/2/3 mark the meals; the Steam-o-meter (0–3 puffs) rates spice.
   - "Three whistles — done!" closes every episode.
-- **Cost tiers:** Lean ≈ 3.9, Standard ≈ 8.4, Premium ≈ 17.4 credits per episode. Re-quote every batch.
+- **Cost:** vector-first ≈ **0 credits per episode** (0.21 if an AI voice clone is used). The AI-image tiers (Lean ≈ 3.9 / Standard ≈ 8.4 / Premium ≈ 17.4) apply only if the user opts into painted stills. Re-quote every batch.
+- **Whistle notes:** breakfast G5, lunch B5, dinner D6; the closing sting plays all three.

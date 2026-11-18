@@ -1,5 +1,9 @@
 # Phase 6: Lowest-credit production plan
 
+> **Decision (18 Nov 2026): vector-first.** Your Higgsfield balance was 0.15 credits, so the character, scenes, food and sound for the pilot were all drawn and synthesised in code: **0 credits per episode** (0.21 if an AI voice clone is used later).
+> - The AI price sheet below still applies to anything optional (painted dish close-ups, a key-art poster, an AI voice), always quoted first.
+> - Template: `what-india-eats/pilot/`.
+
 All prices below were **quoted live from your Higgsfield account on 18 Nov 2026** using the cost-estimate tools. **No credits were spent.** Prices change, so the skill re-quotes before every batch.
 
 ## 1. Price sheet (what one call costs)

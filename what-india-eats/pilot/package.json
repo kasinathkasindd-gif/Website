@@ -1,0 +1,18 @@
+{
+  "name": "what-india-eats-pilot",
+  "private": true,
+  "version": "0.1.0",
+  "description": "EP001 Leh — silent animatic (vector, 0 credits)",
+  "scripts": {
+    "render": "node scripts/render.cjs",
+    "audio": "python3 scripts/make_audio.py"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.545",
+    "@remotion/cli": "4.0.545",
+    "@remotion/renderer": "4.0.545",
+    "remotion": "4.0.545",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

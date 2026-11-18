@@ -2,6 +2,16 @@
 
 **Status:** draft for your approval (18 Nov 2026). **No videos produced, no AI credits spent.** All credit numbers are live quotes from your Higgsfield account.
 
+## Production status (after your approval)
+
+| Step | Status |
+|---|---|
+| Approval pack | ✅ Approved |
+| Hero design | ✅ **Vector Seetu approved**, 0 credits ([sheet](library/seetu/seetu-sheet.png)) |
+| Pilot EP001 Leh | ✅ **Silent animatic built**, 0 credits: [`pilot/renders/ep001-leh-animatic.mp4`](pilot/renders/ep001-leh-animatic.mp4) · [key frames](pilot/renders/ep001-contact-sheet.png) · [how to rebuild](pilot/README.md) |
+| Voice | ⏳ To choose after you review the animatic |
+| Ladakh season (the other 7 districts) | ⏳ Research + local reviewer next |
+
 ## What's in here
 
 | # | Deliverable you asked for | File |

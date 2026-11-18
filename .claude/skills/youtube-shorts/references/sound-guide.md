@@ -7,7 +7,8 @@ The full rationale is in `what-india-eats/05-sound/sound-guide.md`.
   - Prototype: `scripts/sting.py out.wav` (0 credits).
   - The final version should be a recorded real cooker whistle pitch-corrected to the same notes.
 - **Hook whistle:** a single short whistle at 0.0 s.
-- **Meal counters:** 1 / 2 / 3 whistles at the end of breakfast / lunch / dinner.
+- **Meal counters:** one rising note per meal (G5 after breakfast, B5 after lunch, D6 after dinner). The closing sting then plays all three. A diegetic "cousin" cooker whistles lower (~660 Hz) and breathier, so it isn't mistaken for a counter.
+- **Full pilot sound library:** `what-india-eats/pilot/scripts/make_audio.py`.
 - **Rocket Mode:** `scripts/sting.py out.wav --rocket`. Whistle 3 holds and glides up a fifth into a whoosh.
 
 ## Music beds (instrumental only)

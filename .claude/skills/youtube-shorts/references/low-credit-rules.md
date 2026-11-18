@@ -1,5 +1,8 @@
 # Low-credit rules
 
+## Default: vector-first (0 credits)
+Draw the character, scenes, food, UI and diagrams in code (SVG/React), and synthesise SFX and music in numpy. Spend credits only on what the user explicitly wants painted or voiced by AI.
+
 ## Gates
 1. **Quote before every batch.** Call `estimate_*_cost` for each request and sum the results. Show the user the total and the line items. Wait for an explicit "yes".
 2. **Never** opt into free-trial or "unlim" balances without asking. **Never** auto-retry a generation whose outcome is unknown: check the job ids first.

@@ -25,6 +25,8 @@
   - 1, 2 and 3 whistles as the meal-segment counters.
   - Rocket Mode: whistle 3 holds for 2 s, rising a fifth, and fades into a whoosh.
 - **Consistency:** never change the pitches. The motif *is* the brand.
+- **Meal counters (as built in the pilot):** one rising note per meal — G5 after breakfast, B5 after lunch, D6 after dinner. The episode then closes on the full sting, so the motif "completes" exactly at "Three whistles — done!".
+- **Pilot library:** `what-india-eats/pilot/scripts/make_audio.py` synthesises the sting, whistles, about 20 SFX and the three meal beds. It is all original, at 0 credits.
 
 ## 2. Background music per segment (instrumental, about −20 to −24 LUFS under the voice)
 
