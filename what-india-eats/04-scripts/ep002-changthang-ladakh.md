@@ -68,11 +68,25 @@ No narration sentence is reused; "Spice? Still zero puffs." is a callback to the
 
 **TTS respellings:** Seetu → "See-too", Changthang → "Chang-thang", tsampa → "tsahm-pa", churpe → "chur-peh", thukpa → "took-pa", pashmina → "pash-meena", Nubra → "Noo-bra". Every line is transcribed before the edit; the Ladakhi reviewer confirms pronunciations.
 
+## Result (19 Nov 2026)
+
+| Check | EP001 first cut | EP002 |
+|---|---|---|
+| Length | 58.5 s | 60.3 s (109 words) |
+| Voice pace while talking | 2.8 words/s (felt rushed) | **2.1 words/s** |
+| Frozen stretches > 0.5 s (`qa_motion.py`) | 11 (≈ 17 s) | **1 (0.53 s, at the loop seam, by design)** |
+| Glitch frames | 0 | 0 |
+| Loudness | −14.0 LUFS / −1.5 dBTP | −14.0 LUFS / −1.5 dBTP |
+| Speech-to-text of the final mix | all lines | all 14 lines, in order |
+| Credits | 9.07 (incl. one-time 3D Seetu) | **1.41** |
+
+Retakes needed: line 2 ("Stop two:" was dropped; "Chang-thang" came out "Chung Tong") and line 8 ("took-pa, warm" blurred). Both fixed with "Stop two... Chaang-thaang" and "tuk-pa...".
+
 ## Credits (Lean+)
 
 | Item | Credits |
 |---|---|
-| 14 voice lines (Qwen TTS, Leo, speech rate 1.0) + retakes | ≈ 0.3 |
+| 14 voice lines + 2 retakes (Qwen TTS, Leo, speech rate 1.0) | ≈ 0.4 |
 | 2 new reusable SFX: plateau herd ambience, yak grunt (Mirelo) | 1.0 |
 | Seetu, scenes, food, music, other SFX | 0 (reused or code) |
-| **Total** | **≈ 1.3** |
+| **Total (live balance 191.08 → 189.67)** | **1.41** |

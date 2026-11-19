@@ -25,9 +25,9 @@ What you get from it: `pilot/` renders **EP001 with 3D Seetu, a situational voic
 
 **Rate limits seen:** Qwen TTS accepts about 2 jobs at a time (submit in pairs; a 429 costs nothing). Mirelo took 2 at a time.
 
-## 6. How far the remaining 191 credits go
+## 6. How far the remaining credits go (191 after EP001; 189.67 after EP002)
 
-Per-episode cost from EP001's real numbers. Seetu (3D layers + vector face), scenes, food, music and the sound library are reused, so they cost 0.
+Per-episode cost from EP001's real numbers, confirmed by EP002 (1.41 credits = Lean+ with 2 new SFX; its voice alone was ≈ 0.4). Seetu (3D layers + vector face), scenes, food, music and the sound library are reused, so they cost 0.
 
 | Tier | What is paid per episode | Credits / episode (incl. +20% retakes) | Episodes from 191 credits | Route reached (complete seasons) |
 |---|---|---|---|---|

@@ -1,6 +1,6 @@
 # What India Eats: Phase 8 approval pack
 
-**Status (19 Nov 2026):** plan approved; **EP001 Leh is built as a voiced 3D cut** for 9.07 Higgsfield credits (balance 191.08). At the Lean tier (≈ 0.55 credits per episode) the remaining credits cover ≈ 347 episodes: Ladakh → Mizoram, 17 states/UTs. Details: [`06-production/3d-and-voice-budget.md`](06-production/3d-and-voice-budget.md) §0 and §6.
+**Status (19 Nov 2026):** plan approved; **EP001 Leh is built as a voiced 3D cut** for 9.07 Higgsfield credits; **EP002 Changthang** followed for 1.41 (balance 189.67). At the Lean tier (≈ 0.55 credits per episode) the remaining credits cover ≈ 347 episodes: Ladakh → Mizoram, 17 states/UTs. Details: [`06-production/3d-and-voice-budget.md`](06-production/3d-and-voice-budget.md) §0 and §6.
 
 ## Production status (after your approval)
 
@@ -14,7 +14,7 @@
 | 3D Seetu | ✅ Polished 3D-look render (variant 1 of 4), faceless lid/body layers for the video, and a 3D model (GLB). 5.5 credits. Ids: [`library/seetu/3d/README.md`](library/seetu/3d/README.md) |
 | **EP001 voiced 3D cut** | ✅ 58 s, 1080×1920, −14 LUFS: 3D Seetu with drawn face and lip-flap, 21 voiced lines + host, 6 real SFX, captions synced to the voice. In your **Higgsfield library** as `ep001-leh-voiced-3d-v2.mp4`. Build: [`pilot/README.md`](pilot/README.md) |
 | EP001 review | Voice too fast; animation froze (11 still stretches, ≈ 17 s of 58 s). Fixed in the engine and applied to EP002 (EP001 not regenerated, as asked) |
-| **EP002 Changthang** | ✅ 60 s, slower voice (2.1 words/s), no-freeze motion, yak/herd SFX. Script: [`04-scripts/ep002-changthang-ladakh.md`](04-scripts/ep002-changthang-ladakh.md). In your **Higgsfield library** as `ep002-changthang.mp4` |
+| **EP002 Changthang** | ✅ 60 s, slower voice (2.1 words/s), no-freeze motion (1 still moment of 0.5 s vs 11 in EP001), yak/herd SFX, **1.41 credits**. Script + QA: [`04-scripts/ep002-changthang-ladakh.md`](04-scripts/ep002-changthang-ladakh.md). In your **Higgsfield library** as `ep002-changthang.mp4` |
 | Skill | 📝 v0.4 draft with the review fixes, **waiting for your approval** to save: [`../.claude/skills/youtube-shorts/SKILL.md`](../.claude/skills/youtube-shorts/SKILL.md) |
 
 ## What's in here
