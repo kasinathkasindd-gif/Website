@@ -60,5 +60,6 @@ EP001 line jobs (index = caption cue):
 
 | File | Higgsfield media id |
 |---|---|
-| `ep001-leh-voiced-3d.mp4` (1080×1920, mastered) | `b5aa575e-9cda-4b3e-bc43-aeb6ab564426` |
+| **`ep001-leh-voiced-3d-v2.mp4`** (final: last line lands on the Changthang reveal) | `4b4ac753-cfb7-4c05-bf86-da1a4a8867f7` |
+| `ep001-leh-voiced-3d.mp4` (first cut) | `b5aa575e-9cda-4b3e-bc43-aeb6ab564426` |
 | `ep001-leh-contact-sheet.jpg` | `ac1c559d-d2e9-4119-98b0-f63e6036a664` |

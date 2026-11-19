@@ -48,12 +48,15 @@ The full rationale is in `what-india-eats/05-sound/sound-guide.md`.
 
 ## Voice
 - **Preferred:** a human recording (the user or a hired actor). Process it with +1–2 semitones, HPF at 90 Hz, +2 dB at 4 kHz, 3:1 compression and a de-esser.
-- **AI option:**
-  - `create_voice` once, from a consenting speaker's 30–60 s in-character recording.
-  - Then each episode: `generate_audio` with `qwen_audio_tts`, `voice_type: element`, `voice_id: <seetu>`, `language: en`.
-  - Instruction: `warm, playful, curious; light Indian English accent; medium-fast; smiling; slow down on food names`.
-  - Cost: ~0.21 credits per 45 s.
-  - Fallback: `text2speech_v2` with `variant: elevenlabs` (~1.5 credits).
+- **AI option (in use for EP001):**
+  - `generate_audio_batch` with `qwen_audio_tts`, `voice_type: preset`, `voice_id: 73a45c18-0c56-4642-a61e-f6b303f8ded1` (Leo), `language: en`, `format: wav`, `sample_rate: 48000`, `speech_rate` 1.05–1.15.
+  - **One request per caption line**, each with its own `instruction` for the moment, e.g. "Shocked, delighted disbelief, high energy" (hook), "Cosy, soft and warm, evening calm" (dinner), "Suspicious and playful, a teasing question" (Every day…?). End every instruction with "light natural Indian English accent".
+  - Only Leo and Mark worked with Qwen; other presets returned "not available for Qwen Audio". A second character (the host) uses Mark.
+  - **Submit 2 at a time.** More returns 429 (no charge); wait, then send the next pair.
+  - **Transcribe every line** (faster-whisper `small.en`, with 0.5 s of padding) before the edit. TTS can drop words: "Stop one: Lay, Ladakh!" lost "Stop one"; "Stop one... Lay, Ladakh!" fixed it.
+  - ~0.02 credits per line, ~0.44 per episode.
+  - Later: `create_voice` from a consenting speaker's 30–60 s in-character recording, then the same calls with `voice_type: element`.
 - **Never** clone or imitate a real person or celebrity without written consent. Never use a caricature accent.
 - **Pronunciation:** respell local names in the TTS text. Re-render only the broken phrase and splice it in. The reviewer signs off.
-- **Timing:** measure it with `scripts/pauses.py vo.wav` (silence-based phrase boundaries), then write `timing.ts`. All animation keys off the measured times.
+- **Timing:** `what-india-eats/pilot/scripts/build_timing.py --vo VO_DIR --host host.wav --tempo 1.15 --max-pause 0.22 --sprites` trims each line, shortens long pauses inside it, speeds it 1.15× (sox, pitch kept), places the lines in order and writes the script→real time map, captions and lip-flap track. Shots never get squeezed more than 1.4×, a line never runs over a cut, and story beats (meal whistles, the host's reply, the closing sting) stay after their lines.
+- **Length:** a real voice runs at ≈ 2.8 words/s, so the 136-word EP001 is 58 s. **For a 45 s episode, write ≈ 105–110 words.**

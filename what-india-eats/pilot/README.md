@@ -1,7 +1,7 @@
 # EP001 Leh: voiced 3D cut + silent animatic
 
 **Voiced 3D cut (19 Nov 2026, Lean, 9.07 credits in total):** 3D-rendered Seetu, one emotion per voice line, lip-flap, a host voice, real SFX, captions synced to the voice. 58 s, 1080×1920, −14 LUFS.
-- Rendered on Higgsfield's sandbox and saved to your Higgsfield library as `ep001-leh-voiced-3d.mp4` (this cloud session can't download Higgsfield files, so the MP4 is not in the repo).
+- Rendered on Higgsfield's sandbox and saved to your Higgsfield library as `ep001-leh-voiced-3d-v2.mp4` (this cloud session can't download Higgsfield files, so the MP4 is not in the repo).
 - How it is built: see **Voiced 3D cut** below.
 
 ## Silent animatic (18 Nov 2026, 0 credits)
