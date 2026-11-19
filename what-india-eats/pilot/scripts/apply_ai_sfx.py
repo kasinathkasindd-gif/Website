@@ -21,6 +21,8 @@ MAP = {
     "pour": ("pour", None),
     "jeep": ("jeep", 2.0),
     "fire": ("fire", 10.0),
+    "yak": ("yak", None),
+    "herd": ("herd", 8.0),
 }
 
 

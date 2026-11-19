@@ -178,7 +178,8 @@ export const ROUTE_STOPS: [string, number, number][] = [
   ['Sankoo', 330, 1004],
   ['Zanskar', 750, 1078],
 ];
-export const RouteBG: React.FC<{progress?: number; stamped?: boolean; highlight?: number}> = ({progress = 1, stamped = false, highlight = 0}) => {
+export const RouteBG: React.FC<{progress?: number; stamped?: boolean; highlight?: number; stamps?: number; stopNo?: number}> = ({progress = 1, stamped = false, highlight = 0, stamps, stopNo = 1}) => {
+  const nStamps = stamps ?? (stamped ? 1 : 0);
   const d = ROUTE_STOPS.map(([, x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ');
   return (
     <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{position: 'absolute'}}>
@@ -188,7 +189,7 @@ export const RouteBG: React.FC<{progress?: number; stamped?: boolean; highlight?
         return <circle key={i} cx={r() * 1080} cy={r() * 1920} r={2 + r() * 3} fill={WHITE} opacity={0.25 + r() * 0.4} />;
       })}
       <text x={540} y={330} textAnchor="middle" fontFamily={FONT_HEAD} fontSize={56} fill={TURMERIC}>SEASON 1 · LADAKH</text>
-      <text x={540} y={388} textAnchor="middle" fontFamily={FONT_BODY} fontSize={36} fill={WHITE} opacity={0.85}>8 districts · stop 1 of 793</text>
+      <text x={540} y={388} textAnchor="middle" fontFamily={FONT_BODY} fontSize={36} fill={WHITE} opacity={0.85}>8 districts · stop {stopNo} of 793</text>
       <path d={d} stroke={WHITE} strokeWidth={10} strokeDasharray="4 26" strokeLinecap="round" fill="none" opacity={0.55} pathLength={1} strokeDashoffset={0} style={{}} />
       {ROUTE_STOPS.map(([name, x, y], i) => {
         const on = i <= highlight;
@@ -199,7 +200,7 @@ export const RouteBG: React.FC<{progress?: number; stamped?: boolean; highlight?
             <text x={x + (x < 540 ? 50 : -50)} y={y + 14} textAnchor={x < 540 ? 'start' : 'end'} fontFamily={FONT_HEAD} fontSize={i === highlight ? 44 : 34} fill={WHITE} opacity={on ? 1 : 0.6}>
               {i + 1} · {name}
             </text>
-            {stamped && i === 0 && (
+            {i < nStamps && (
               <g transform={`translate(${x} ${y}) rotate(-12)`}>
                 <circle r={62} fill="none" stroke={RED} strokeWidth={8} />
                 <path d="M -26 0 L -6 22 L 30 -22" stroke={RED} strokeWidth={12} fill="none" strokeLinecap="round" strokeLinejoin="round" />

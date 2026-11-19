@@ -1,12 +1,13 @@
-import React, {useContext} from 'react';
-import {AbsoluteFill, Audio, Img, Sequence, interpolate, spring, staticFile, useVideoConfig} from 'remotion';
-import {EpCtx, EpProps, ShotCtx, Timing, makeWarp, useShotFrame, useToReal} from './timing';
+import React from 'react';
+import {AbsoluteFill, interpolate, spring, useVideoConfig} from 'remotion';
+import {EpProps, useShotFrame, useToReal} from './timing';
+import {Episode, Sfx, Shot} from './engine';
 import {Seetu, STEAM_POP, STEAM_SPICY, isBlinking, steamPath} from './Seetu';
 import {
   BurstBG, KitchenBG, ExteriorBG, RouteBG, PlateauBG, ROUTE_STOPS, Jeep, TeaCup, Steam, Churn, BarleyBowl, Kettle,
   Khambir, Thali, ThukpaBowl, CousinCooker, HostHandLadle, Sack,
 } from './scenes/scenes';
-import {Captions, Cue, HookText, MealChip, SteamMeter, DishCard, FactCard, Badge, SpeechBubble, Fonts} from './ui/ui';
+import {Cue, HookText, MealChip, SteamMeter, DishCard, FactCard, Badge, SpeechBubble} from './ui/ui';
 import {sec, FPS, CREAM, INK, RED, FONT_HEAD} from './theme';
 
 const clamp = {extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
@@ -420,8 +421,7 @@ const ShotLoop: React.FC = () => {
 };
 
 // ---------------------------------------------------------------- sound
-type S = {f: string; at: number; db: number; dur?: number; duck?: boolean};
-const SFX: S[] = [
+const SFX: Sfx[] = [
   {f: 'whistle_hook', at: 0.0, db: -3},
   {f: 'steam_burst', at: 0.05, db: -9},
   {f: 'whoosh', at: 1.78, db: -14},
@@ -461,70 +461,8 @@ const SFX: S[] = [
   {f: 'steam_burst', at: 44.0, db: -14},
 ];
 
-const dB = (x: number) => Math.pow(10, x / 20);
-
-const Sound: React.FC = () => {
-  const {warp, timing} = useContext(EpCtx);
-  const lines = timing?.lines ?? [];
-  // Beds and ambience dip 7 dB under the voice, with 0.12 s ramps.
-  const duck = (absFrame: number) => {
-    const t = absFrame / FPS;
-    let d = 0;
-    for (const l of lines) {
-      const k = Math.min(t - (l.start - 0.12), l.start + l.dur + 0.12 - t) / 0.12;
-      d = Math.max(d, Math.min(1, Math.max(0, k)));
-    }
-    return dB(-7 * d);
-  };
-  const bedTrim = timing ? -3 : 0;
-  return (
-    <>
-      {SFX.map((c, i) => {
-        const from = Math.round(warp(c.at) * FPS);
-        const dur = c.dur ? Math.max(1, Math.round(warp(c.at + c.dur) * FPS) - from) : undefined;
-        const base = dB(c.db + (c.duck ? bedTrim : 0));
-        const vol = c.duck && dur ? (f: number) => base * duck(from + f) * Math.min(1, (dur - f) / 12) : base;
-        return (
-          <Sequence key={i} from={from} durationInFrames={dur} layout="none">
-            <Audio src={staticFile(`audio/${c.f}.wav`)} volume={vol} />
-          </Sequence>
-        );
-      })}
-      {lines.map((l) => (
-        <Sequence key={`vo${l.i}`} from={Math.round(l.start * FPS)} layout="none">
-          <Audio src={staticFile(l.file)} />
-        </Sequence>
-      ))}
-      {(timing?.extra ?? []).map((e, i) => (
-        <Sequence key={`x${i}`} from={Math.round(e.start * FPS)} layout="none">
-          <Audio src={staticFile(e.file)} volume={dB(e.db)} />
-        </Sequence>
-      ))}
-    </>
-  );
-};
-
-// Captions follow the real voice: each line shows from its first word until the next line (max 0.6 s after it ends).
-const voCues = (timing: Timing, cuts: number[]): Cue[] =>
-  timing.lines.map((l, k) => {
-    const next = timing.lines[k + 1];
-    const end = l.start + l.dur;
-    // hold the caption a moment after the line, but never past the next line or the next shot cut
-    const cut = cuts.find((c) => c > end - 0.01) ?? Infinity;
-    const to = Math.min(next ? next.start - 0.02 : Infinity, end + (next ? 0.6 : 0.8), cut - 0.03);
-    return {from: Math.max(0, l.start - 0.05), to: Math.max(to, end), text: CUES[l.i].text};
-  });
-
-// SVG <image> loads are not awaited by the renderer, so load the sprites once through <Img> (which is).
-const SpritePreload: React.FC = () => (
-  <div style={{position: 'absolute', width: 1, height: 1, opacity: 0, overflow: 'hidden'}}>
-    <Img src={staticFile('seetu3d/body.png')} />
-    <Img src={staticFile('seetu3d/lid.png')} />
-  </div>
-);
-
 // ---------------------------------------------------------------- composition
-const SHOTS: [number, number, React.FC][] = [
+const SHOTS: Shot[] = [
   [0, 1.8, ShotHook],
   [1.8, 5.5, ShotRoute],
   [5.5, 7.5, ShotArrival],
@@ -540,29 +478,4 @@ const SHOTS: [number, number, React.FC][] = [
 ];
 export const DURATION_S = 46;
 
-export const Ep001: React.FC<EpProps> = ({timing = null, sprites = false}) => {
-  const anchors = timing?.anchors ?? ([[0, 0], [DURATION_S, DURATION_S]] as [number, number][]);
-  const {warp, inv} = makeWarp(anchors);
-  const cues = timing ? voCues(timing, SHOTS.slice(1).map(([a]) => warp(a))) : CUES;
-  return (
-    <EpCtx.Provider value={{warp, inv, mouth: timing?.mouth ?? [], sprites, timing}}>
-      <AbsoluteFill style={{background: '#000'}}>
-        <Fonts />
-        {sprites && <SpritePreload />}
-        {SHOTS.map(([a, b, C], i) => {
-          const from = Math.round(warp(a) * FPS);
-          const to = Math.round(warp(b) * FPS);
-          return (
-            <Sequence key={i} from={from} durationInFrames={Math.max(1, to - from)}>
-              <ShotCtx.Provider value={{scriptStart: a, startFrame: from}}>
-                <C />
-              </ShotCtx.Provider>
-            </Sequence>
-          );
-        })}
-        <Captions cues={cues} />
-        <Sound />
-      </AbsoluteFill>
-    </EpCtx.Provider>
-  );
-};
+export const Ep001: React.FC<EpProps> = (props) => <Episode props={props} cues={CUES} shots={SHOTS} sfx={SFX} durationS={DURATION_S} />;

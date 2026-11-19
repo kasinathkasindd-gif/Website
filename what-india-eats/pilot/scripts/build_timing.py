@@ -1,8 +1,11 @@
 """Fit EP001's animation to a real voice-over (0 credits).
 
 Usage:
-  python3 scripts/build_timing.py --vo VO_DIR [--host HOST.wav] [--tempo 1.15] [--max-pause 0.22] [--sprites]
-                                  [--props out/props.json]
+  python3 scripts/build_timing.py --vo VO_DIR [--host HOST.wav] [--tempo 1.0] [--max-pause 0.45] [--sprites]
+                                  [--config src/ep002/timing.json] [--props out/props.json]
+
+Without --config it times EP001 (cues parsed from src/Ep001.tsx). With --config it reads the episode's cues,
+story-beat events, shot cuts and pacing from that JSON (the same file the episode's .tsx imports).
 
 VO_DIR holds one file per caption cue: 00.wav ... 20.wav (any format ffmpeg reads).
 Writes:
@@ -150,10 +153,12 @@ def read_cues():
     return [(float(a), float(b), t) for a, b, _q, t in cues]
 
 
-def solve(cues, durs, host_dur):
+def solve(cues, durs, host_dur, base_events=None, cuts=None, end_s=46.0, loop_tail=LOOP_TAIL,
+          gap_in=GAP_IN_SENTENCE, gap_between=GAP_BETWEEN, max_squeeze=MAX_SQUEEZE):
     """Return anchors [(script s, real s)], real line starts, event times."""
-    events = list(EVENTS)
-    for c in SHOT_CUTS:
+    base_events = list(EVENTS if base_events is None else base_events)
+    events = list(base_events)
+    for c in SHOT_CUTS if cuts is None else cuts:
         before = [i for i, (s, _e, _t) in enumerate(cues) if s < c]
         if before and not any(abs(e[0] - c) < 1e-6 for e in events):
             events.append((c, "cut", before[-1], 0.0))
@@ -166,9 +171,9 @@ def solve(cues, durs, host_dur):
     hold_until = 0.0
     last_end, last_text = 0.0, ""
     for s, kind, k in pts:
-        lo = prev_r + (s - prev_s) / MAX_SQUEEZE
+        lo = prev_r + (s - prev_s) / max_squeeze
         if kind == "line":
-            gap = GAP_IN_SENTENCE if re.search(r"[,:…]$|\.\.\.$", last_text.strip()) else GAP_BETWEEN
+            gap = gap_in if re.search(r"[,:…]$|\.\.\.$", last_text.strip()) else gap_between
             r = max(lo, (last_end + gap) if k else 0.15, hold_until)
             starts[k], ends[k] = r, r + durs[k]
             last_end, last_text = ends[k], cues[k][2]
@@ -181,9 +186,8 @@ def solve(cues, durs, host_dur):
             hold_until = max(hold_until, r + h)
         anchors.append((s, r))
         prev_s, prev_r = s, r
-    end_s = 46.0
-    anchors.append((end_s, prev_r + LOOP_TAIL))
-    return anchors, starts, {k: v for k, v in ev_r.items() if k < len(EVENTS)}
+    anchors.append((end_s, prev_r + loop_tail))
+    return anchors, starts, {k: v for k, v in ev_r.items() if k < len(base_events)}
 
 
 def mouth_track(lines, total):
@@ -216,12 +220,26 @@ def main():
     ap.add_argument("--vo", required=True)
     ap.add_argument("--host")
     ap.add_argument("--sprites", action="store_true")
-    ap.add_argument("--tempo", type=float, default=1.0, help="speech speed-up, e.g. 1.15")
-    ap.add_argument("--max-pause", type=float, default=0.22, help="longest silence kept inside a line (s)")
+    ap.add_argument("--config", help="episode timing JSON (cues, events, cuts, pacing); default = EP001")
+    ap.add_argument("--tempo", type=float, default=1.0, help="speech speed-up; keep 1.0 for natural delivery")
+    ap.add_argument("--max-pause", type=float, default=0.45, help="longest silence kept inside a line (s)")
     ap.add_argument("--props", default=os.path.join(ROOT, "out", "props.json"))
     a = ap.parse_args()
 
-    cues = read_cues()
+    if a.config:
+        cfg = json.load(open(a.config, encoding="utf8"))
+        cues = [(float(c[0]), float(c[1]), c[2]) for c in cfg["cues"]]
+        events = [tuple(e) for e in cfg["events"]]
+        cuts = [s for s, _e, _n in cfg["shots"]][1:]
+        end_s, loop_tail = float(cfg["end"]), float(cfg.get("loop_tail", LOOP_TAIL))
+        pace = cfg.get("pace", {})
+        sub = cfg.get("vo_dir", "vo")
+    else:
+        cues, events, cuts, end_s, loop_tail, pace, sub = read_cues(), EVENTS, SHOT_CUTS, 46.0, LOOP_TAIL, {}, "vo"
+    gap_in = pace.get("gap_in", GAP_IN_SENTENCE)
+    gap_between = pace.get("gap_between", GAP_BETWEEN)
+    max_squeeze = pace.get("max_squeeze", MAX_SQUEEZE)
+
     lines = []
     for i in range(len(cues)):
         cand = [f for f in os.listdir(a.vo) if re.match(rf"0*{i}\.(wav|mp3|flac|ogg)$", f)]
@@ -229,25 +247,26 @@ def main():
             raise SystemExit(f"missing voice line {i:02d} in {a.vo}")
         x = trim(read_audio(os.path.join(a.vo, sorted(cand)[0])))
         x = level_match(change_tempo(tighten_pauses(x, a.max_pause), a.tempo))
-        write_wav(os.path.join(ROOT, "public", "vo", f"{i:02d}.wav"), x)
+        write_wav(os.path.join(ROOT, "public", *sub.split("/"), f"{i:02d}.wav"), x)
         lines.append(x)
     durs = [len(x) / SR for x in lines]
     host = None
     if a.host:
         host = level_match(change_tempo(trim(read_audio(a.host)), a.tempo))
-        write_wav(os.path.join(ROOT, "public", "vo", "host.wav"), host)
+        write_wav(os.path.join(ROOT, "public", *sub.split("/"), "host.wav"), host)
     host_dur = len(host) / SR if host is not None else 0.0
 
-    anchors, starts, ev_r = solve(cues, durs, host_dur)
+    anchors, starts, ev_r = solve(cues, durs, host_dur, events, cuts, end_s, loop_tail, gap_in, gap_between, max_squeeze)
     total = anchors[-1][1]
+    host_k = next((k for k, e in enumerate(events) if str(e[1]).startswith("host")), None)
     timing = {
-        "lines": [{"i": i, "file": f"vo/{i:02d}.wav", "start": round(starts[i], 3), "dur": round(durs[i], 3)} for i in range(len(cues))],
-        "extra": ([{"file": "vo/host.wav", "start": round(ev_r[2], 3), "db": -3}] if host is not None else []),
+        "lines": [{"i": i, "file": f"{sub}/{i:02d}.wav", "start": round(starts[i], 3), "dur": round(durs[i], 3)} for i in range(len(cues))],
+        "extra": ([{"file": f"{sub}/host.wav", "start": round(ev_r[host_k], 3), "db": -3}] if host is not None and host_k is not None else []),
         "anchors": [[round(s, 3), round(r, 3)] for s, r in anchors],
         "total": round(total, 3),
         "mouth": mouth_track([(starts[i], lines[i]) for i in range(len(cues))], total),
     }
-    os.makedirs(os.path.dirname(a.props), exist_ok=True)
+    os.makedirs(os.path.dirname(os.path.abspath(a.props)), exist_ok=True)
     json.dump({"timing": timing, "sprites": bool(a.sprites)}, open(a.props, "w"))
 
     words = sum(len(t.split()) for _s, _e, t in cues)
@@ -255,9 +274,9 @@ def main():
     print(f"{'#':>2} {'script':>6} {'real':>6} {'len':>5}  text")
     for i, (s, _e, t) in enumerate(cues):
         print(f"{i:2d} {s:6.2f} {starts[i]:6.2f} {durs[i]:5.2f}  {t}")
-    for k, (s, label, _a, _h) in enumerate(EVENTS):
+    for k, (s, label, _a, _h) in enumerate(events):
         print(f"   {s:6.2f} {ev_r[k]:6.2f}        [{label}]")
-    print(f"total {total:.2f} s (script 46.00) | speech {speech:.1f} s, {words} words, {words / speech:.2f} words/s while talking")
+    print(f"total {total:.2f} s (script {end_s:.2f}) | speech {speech:.1f} s, {words} words, {words / speech:.2f} words/s while talking")
     print("props ->", os.path.abspath(a.props))
 
 

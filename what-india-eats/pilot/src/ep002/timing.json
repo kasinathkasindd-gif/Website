@@ -1,0 +1,47 @@
+{
+  "episode": "EP002 Changthang",
+  "vo_dir": "vo/ep002",
+  "end": 55.6,
+  "loop_tail": 2.0,
+  "pace": {"gap_in": 0.14, "gap_between": 0.3, "max_squeeze": 1.25},
+  "cues": [
+    [0.2, 2.8, "A whole yak… in one winter?!"],
+    [3.1, 6.2, "I'm Seetu, eating through every district of India."],
+    [6.4, 9.4, "Stop two: Changthang, land of nomad herders."],
+    [9.8, 14.4, "Breakfast: tsampa, roasted barley flour, stirred into salty butter tea."],
+    [14.7, 16.5, "Spice? Still zero puffs."],
+    [17.4, 20.6, "Lunch, in many nomad homes, is meat and dairy:"],
+    [20.8, 23.9, "yak or mutton stew, and churpe, dried cheese."],
+    [25.0, 27.8, "Ow! Okay… you soften it in tea."],
+    [28.6, 32.2, "Dinner? Like much of Ladakh: thukpa, warm noodle soup."],
+    [32.4, 34.0, "Again? Yes, please!"],
+    [35.0, 42.8, "Mind blown: researchers found a nomad family may eat one yak, or three to four sheep or goats, each winter."],
+    [43.1, 47.8, "And these herders are among India's top pashmina producers: cashmere wool!"],
+    [49.9, 51.4, "Three whistles — done!"],
+    [51.6, 53.4, "Next stop… Nubra!"]
+  ],
+  "events": [
+    [16.7, "meal-1 whistle", 4, 0.4],
+    [24.3, "cheese clonk", 6, 0.6],
+    [28.0, "meal-2 whistle", 7, 0.4],
+    [34.2, "meal-3 whistle", 9, 0.5],
+    [48.2, "map stamp", 11, 0.0],
+    [48.4, "three-whistle sting", null, 1.4],
+    [53.6, "cliffhanger ends", 13, 0.0]
+  ],
+  "shots": [
+    [0.0, 3.0, "hook"],
+    [3.0, 6.3, "route"],
+    [6.3, 9.6, "arrival"],
+    [9.6, 14.6, "breakfast"],
+    [14.6, 17.2, "spice"],
+    [17.2, 24.0, "lunch"],
+    [24.0, 28.4, "cheese"],
+    [28.4, 34.8, "dinner"],
+    [34.8, 43.0, "fact_yak"],
+    [43.0, 48.0, "fact_pashmina"],
+    [48.0, 51.5, "cliff"],
+    [51.5, 53.6, "nubra"],
+    [53.6, 55.6, "loop"]
+  ]
+}

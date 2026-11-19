@@ -44,7 +44,7 @@ type Ep = {
   timing: Timing | null;
 };
 export const EpCtx = createContext<Ep>({warp: (s) => s, inv: (r) => r, mouth: [], sprites: false, timing: null});
-export const ShotCtx = createContext<{scriptStart: number; startFrame: number}>({scriptStart: 0, startFrame: 0});
+export const ShotCtx = createContext<{scriptStart: number; startFrame: number; durFrames?: number}>({scriptStart: 0, startFrame: 0});
 
 // Shot-local frame counter in *script* frames, so every animation key in a shot stays valid when the voice
 // stretches or squeezes time. Fractional values are fine for interpolate() and spring().
@@ -67,4 +67,11 @@ export const useToReal = () => {
   const {warp} = useContext(EpCtx);
   const {scriptStart, startFrame} = useContext(ShotCtx);
   return (sf: number) => (sf >= 99999 ? sf : warp(scriptStart + sf / FPS) * FPS - startFrame);
+};
+
+// 0..1 through the current shot in real time (camera drift, ambient motion that must span the whole shot).
+export const useShotProgress = () => {
+  const f = useCurrentFrame();
+  const {durFrames = 1} = useContext(ShotCtx);
+  return Math.min(1, Math.max(0, f / Math.max(1, durFrames - 1)));
 };

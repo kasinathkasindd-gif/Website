@@ -3,6 +3,7 @@
 // preview: 540x960 MP4; final: 1080x1920 MP4 (CRF 18)
 // EP_PROPS=path/to/props.json  -> input props, e.g. {"timing": <build_timing.py output>, "sprites": true}
 // EP_OUT=name.mp4               -> output file name in out/
+// EP_COMP=Ep002Changthang       -> composition id (default Ep001Leh)
 // REMOTION_BROWSER=/path/to/chrome-headless-shell (else the local Playwright one, else Remotion downloads one)
 const path = require('path');
 const fs = require('fs');
@@ -23,7 +24,7 @@ fs.mkdirSync(out, {recursive: true});
 
 (async () => {
   const serveUrl = await bundle({entryPoint: path.join(root, 'src/index.ts'), publicDir: path.join(root, 'public')});
-  const composition = await selectComposition({serveUrl, id: 'Ep001Leh', browserExecutable: BROWSER, inputProps});
+  const composition = await selectComposition({serveUrl, id: process.env.EP_COMP || 'Ep001Leh', browserExecutable: BROWSER, inputProps});
   const common = {composition, serveUrl, browserExecutable: BROWSER, inputProps, chromiumOptions: {gl: 'swangle'}};
   if (mode === 'stills') {
     const times = (process.argv[3] || '0.3,1.2,3,5,6.6,7.3,8.5,11,12.8,14,14.7,17,19,22,23.3,24.2,27,30.8,32,34,38,40,42,43.5,45').split(',').map(Number);

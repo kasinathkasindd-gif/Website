@@ -265,4 +265,35 @@ for k in range(int(d * 11)):
     c = noise(0.014, 1400, 9000) * np.exp(-T(0.014) * 260) * rng.uniform(0.25, 1.0)
     place(fire, c, rng.uniform(0, d - 0.05), -3)
 save("fire", fire * env(int(d * SR), 0.5, 0.8))
+
+# ---------------- EP002 additions (appended so earlier sounds stay identical) ----------------
+d = 0.5  # rock-hard cheese bite: wood knock + metal ting
+clonk = tone(np.linspace(260, 180, int(d * SR)), d, (1.0, 0.5, 0.25)) * np.exp(-T(d) * 28)
+place(clonk, noise(0.03, 1500, 5000) * np.exp(-T(0.03) * 120), 0.0, -4)
+place(clonk, tone(2093, 0.4) * np.exp(-T(0.4) * 9), 0.01, -14)
+save("clonk", clonk)
+d = 0.45  # cube into tea
+plop = tone(np.linspace(520, 180, int(d * SR)), d) * np.exp(-T(d) * 14)
+place(plop, noise(0.2, 800, 4000) * np.exp(-T(0.2) * 20), 0.02, -10)
+save("plop", plop)
+d = 8.0  # stew bubbling
+bub = 0.05 * noise(d, 100, 600)
+for k in range(int(d * 7)):
+    f0 = rng.uniform(140, 320)
+    place(bub, tone(np.linspace(f0, f0 * 1.6, int(0.07 * SR)), 0.07) * np.exp(-T(0.07) * 30), rng.uniform(0, d - 0.1), rng.uniform(-14, -6))
+save("bubbles", bub * env(int(d * SR), 0.3, 0.5))
+d = 2.0  # slow yak hooves on gravel
+hv = np.zeros(int(d * SR))
+for k in range(8):
+    place(hv, noise(0.06, 150, 1400) * np.exp(-T(0.06) * 50), k * 0.24 + rng.uniform(0, 0.03), -2 - (k % 2) * 3)
+save("hooves", hv)
+d = 1.2  # placeholder yak grunt (replaced by a recorded/AI one when available)
+yk = band(tone(np.linspace(95, 70, int(d * SR)), d, (1, 0.7, 0.5, 0.3)) * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * T(d))), 60, 900)
+save("yak", yk * env(int(d * SR), 0.08, 0.4))
+d = 8.0  # placeholder herd ambience
+hd = 0.25 * noise(d, 200, 1200)
+for k in range(9):
+    f0 = rng.uniform(380, 620)
+    place(hd, tone(f0, 0.5, (1, 0.6, 0.3), (6, 40)) * env(int(0.5 * SR), 0.05, 0.2), rng.uniform(0, d - 0.6), -10)
+save("herd", hd * env(int(d * SR), 0.5, 0.8))
 print("done ->", os.path.abspath(OUT))

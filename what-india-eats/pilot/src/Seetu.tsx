@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {staticFile} from 'remotion';
-import {INK, STEEL, HI, SHADE, RED, TURMERIC, WHITE, BLUSH, MOUTH, TONGUE} from './theme';
+import {INK, STEEL, HI, SHADE, RED, TURMERIC, WHITE, BLUSH, MOUTH, TONGUE, FPS} from './theme';
 import {EpCtx, useAbsFrame} from './timing';
 
 // Vector rig ported from library/seetu/build_seetu.py (approved design v0.1).
@@ -34,6 +34,7 @@ export type SeetuProps = {
   look?: [number, number];
   squash?: number; // 1 = normal, <1 squashed
   talk?: boolean; // lip-flap to the voice-over when it plays (default true)
+  idle?: boolean; // breathing + talk bounce so Seetu never freezes (default true)
 };
 
 const BODY =
@@ -214,6 +215,7 @@ export const Seetu: React.FC<SeetuProps> = ({
   look = [0, 0],
   squash = 1,
   talk = true,
+  idle = true,
 }) => {
   const {mouth: env, sprites} = useContext(EpCtx);
   const absF = useAbsFrame();
@@ -228,12 +230,19 @@ export const Seetu: React.FC<SeetuProps> = ({
   const bob = walk === null ? 0 : -Math.abs(Math.sin(ph)) * 10;
   const sx = flip ? -scale : scale;
   const t = `translate(${x} ${y}) rotate(${rotate}) scale(${sx} ${scale}) translate(-500 -905)`;
-  const body = `translate(0 ${bob}) translate(500 770) scale(${1 + (1 - squash) * 0.6} ${squash}) translate(-500 -770)`;
+  // Life: slow breathing always; while talking a small bounce and head-nod driven by the voice loudness.
+  const tS = absF / FPS;
+  const lvl = talk && m > 0 ? Math.max(0, (m - 0.05) / 0.95) : 0;
+  const br = idle ? Math.sin(tS * Math.PI * 2 * 0.5 + (x + y) * 0.003) : 0;
+  const nod = idle && lvl > 0 ? Math.sin(tS * Math.PI * 2 * 1.4) * 2.4 * Math.min(1, lvl * 1.6) : 0;
+  const sqx = (1 + (1 - squash) * 0.6) * (1 + 0.012 * br + 0.02 * lvl);
+  const sqy = squash * (1 - 0.012 * br - 0.025 * lvl);
+  const body = `translate(0 ${bob - 7 * lvl - 2 * br}) translate(500 770) rotate(${nod}) scale(${sqx} ${sqy}) translate(-500 -770)`;
   const lid = `translate(0 ${lidLift}) rotate(${lidTilt} 500 420)`;
   const legs = (
     <>
       <path
-        d={`M 432 760 L ${424 + fL[0]} ${868 + fL[1]} M 568 760 L ${576 + fR[0]} ${868 + fR[1]}`}
+        d={`M 432 730 L ${424 + fL[0]} ${868 + fL[1]} M 568 730 L ${576 + fR[0]} ${868 + fR[1]}`}
         stroke={INK}
         strokeWidth={16}
         strokeLinecap="round"
