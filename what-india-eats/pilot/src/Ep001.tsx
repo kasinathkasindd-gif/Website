@@ -505,11 +505,13 @@ const Sound: React.FC = () => {
 };
 
 // Captions follow the real voice: each line shows from its first word until the next line (max 0.6 s after it ends).
-const voCues = (timing: Timing, loopAt: number): Cue[] =>
+const voCues = (timing: Timing, cuts: number[]): Cue[] =>
   timing.lines.map((l, k) => {
     const next = timing.lines[k + 1];
     const end = l.start + l.dur;
-    const to = next ? Math.min(next.start - 0.02, end + 0.6) : Math.min(end + 0.8, loopAt - 0.03);
+    // hold the caption a moment after the line, but never past the next line or the next shot cut
+    const cut = cuts.find((c) => c > end - 0.01) ?? Infinity;
+    const to = Math.min(next ? next.start - 0.02 : Infinity, end + (next ? 0.6 : 0.8), cut - 0.03);
     return {from: Math.max(0, l.start - 0.05), to: Math.max(to, end), text: CUES[l.i].text};
   });
 
@@ -541,7 +543,7 @@ export const DURATION_S = 46;
 export const Ep001: React.FC<EpProps> = ({timing = null, sprites = false}) => {
   const anchors = timing?.anchors ?? ([[0, 0], [DURATION_S, DURATION_S]] as [number, number][]);
   const {warp, inv} = makeWarp(anchors);
-  const cues = timing ? voCues(timing, warp(44.0)) : CUES;
+  const cues = timing ? voCues(timing, SHOTS.slice(1).map(([a]) => warp(a))) : CUES;
   return (
     <EpCtx.Provider value={{warp, inv, mouth: timing?.mouth ?? [], sprites, timing}}>
       <AbsoluteFill style={{background: '#000'}}>

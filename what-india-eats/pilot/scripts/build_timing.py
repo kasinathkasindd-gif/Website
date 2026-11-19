@@ -46,6 +46,11 @@ EVENTS = [
 ]
 
 
+# Shot cuts (script s) from SHOTS in src/Ep001.tsx: a line never runs over a cut, so each cut waits for the
+# last line that starts before it.
+SHOT_CUTS = [1.8, 5.5, 7.5, 10.5, 13.5, 15.0, 21.0, 24.5, 31.0, 39.5]
+
+
 def read_audio(path):
     raw = subprocess.run(
         ["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
@@ -147,8 +152,13 @@ def read_cues():
 
 def solve(cues, durs, host_dur):
     """Return anchors [(script s, real s)], real line starts, event times."""
+    events = list(EVENTS)
+    for c in SHOT_CUTS:
+        before = [i for i, (s, _e, _t) in enumerate(cues) if s < c]
+        if before and not any(abs(e[0] - c) < 1e-6 for e in events):
+            events.append((c, "cut", before[-1], 0.0))
     pts = [(s, "line", i) for i, (s, _e, _t) in enumerate(cues)]
-    pts += [(s, "event", k) for k, (s, *_r) in enumerate(EVENTS)]
+    pts += [(s, "event", k) for k, (s, *_r) in enumerate(events)]
     pts.sort(key=lambda p: (p[0], 0 if p[1] == "event" else 1))
     starts, ends, ev_r = {}, {}, {}
     anchors = [(0.0, 0.0)]
@@ -164,8 +174,8 @@ def solve(cues, durs, host_dur):
             last_end, last_text = ends[k], cues[k][2]
             hold_until = 0.0
         else:
-            _s, _label, after, hold = EVENTS[k]
-            r = max(lo, ends[after] + 0.10) if after is not None else lo
+            _s, label, after, hold = events[k]
+            r = max(lo, ends[after] + (0.06 if label == "cut" else 0.10)) if after is not None else lo
             ev_r[k] = r
             h = (host_dur + 0.12) if hold is None else hold
             hold_until = max(hold_until, r + h)
@@ -173,7 +183,7 @@ def solve(cues, durs, host_dur):
         prev_s, prev_r = s, r
     end_s = 46.0
     anchors.append((end_s, prev_r + LOOP_TAIL))
-    return anchors, starts, ev_r
+    return anchors, starts, {k: v for k, v in ev_r.items() if k < len(EVENTS)}
 
 
 def mouth_track(lines, total):
