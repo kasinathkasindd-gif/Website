@@ -63,3 +63,19 @@ EP001 line jobs (index = caption cue):
 | **`ep001-leh-voiced-3d-v2.mp4`** (final: last line lands on the Changthang reveal) | `4b4ac753-cfb7-4c05-bf86-da1a4a8867f7` |
 | `ep001-leh-voiced-3d.mp4` (first cut) | `b5aa575e-9cda-4b3e-bc43-aeb6ab564426` |
 | `ep001-leh-contact-sheet.jpg` | `ac1c559d-d2e9-4119-98b0-f63e6036a664` |
+
+## EP002 Changthang (Qwen TTS, Leo, `speech_rate` 1.0)
+
+| # | Job id | # | Job id |
+|---|---|---|---|
+| 00 | `5e316734-f771-4827-8d2e-fe5519af2178` | 07 | `61cd996d-6960-4177-9798-9415e826bdff` |
+| 01 | `1b8ed551-5dc2-45ac-a042-dbe7dc88ce96` | 08 | `dd190801-d81d-4235-a6a8-10521e4e04e4` (retake: "tuk-pa...") |
+| 02 | `1e39ad63-c032-4892-b8d3-754bacb35db2` (retake: "Stop two... Chaang-thaang") | 09 | `1f6a46ac-1aa6-43df-b84e-642953db6985` |
+| 03 | `2aa213b7-a3d5-4eaa-8a34-82ed50713059` | 10 | `e59e3304-7fbe-496e-a20e-5aa4e33ae8cc` |
+| 04 | `cd63757c-8a32-421d-aea2-97458922bea1` | 11 | `a9773e7f-8743-4e74-8f0a-130e7e6c94b0` |
+| 05 | `c2f32df3-ad65-4d08-b1f5-28f6466fc2c8` | 12 | `50348006-b8bc-478b-8be1-5dd1de49f8b5` |
+| 06 | `2c5dd711-320c-4735-a40a-be2c3ccf8eab` | 13 | `30d04901-cc4d-4b58-b254-a427ce32c3c1` |
+
+New reusable SFX (Mirelo, 0.5 each): yak grunt `5c01bbf6-1a0e-4169-806e-5e9e87406a8b` → `yak.wav`; goats and sheep on a windy plateau `c224bd9b-fb79-454d-901e-5e9198cddc08` → `herd.wav`.
+
+Output: `ep002-changthang.mp4` → Higgsfield media `35ff4046-2db0-4688-82a9-fbab8809c896`; contact sheet `edc3706c-be47-4dc9-9fda-1be68f0c6913`.

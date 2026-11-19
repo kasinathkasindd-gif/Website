@@ -4,6 +4,21 @@
 - Rendered on Higgsfield's sandbox and saved to your Higgsfield library as `ep001-leh-voiced-3d-v2.mp4` (this cloud session can't download Higgsfield files, so the MP4 is not in the repo).
 - How it is built: see **Voiced 3D cut** below.
 
+## EP002 Changthang (19 Nov 2026): the review fixes
+
+Built after the EP001 review ("delivery too fast", "animation freezes"):
+- **Slower voice:** lines generated at `speech_rate` 1.0, fitted with `--tempo 1.10 --max-pause 0.30` → 2.1 words/s while talking (EP001: 2.8). 109 words, 60 s.
+- **No frozen frames:** shared `src/engine.tsx` (`Cam` drift on every shot), Seetu breathes and bounces/nods with the voice, ambient motion in every scene, one visual beat per line. `scripts/qa_motion.py` checks the render (EP001 had 11 still stretches).
+- Per-episode config: `src/ep002/timing.json` (cues, story beats, shots, pace) is read by both `Ep002.tsx` and `build_timing.py`.
+
+```bash
+python3 scripts/make_audio.py && python3 scripts/apply_ai_sfx.py SFX_DIR        # SFX_DIR adds yak + herd for EP002
+python3 scripts/build_timing.py --config src/ep002/timing.json --vo VO_DIR --sprites --tempo 1.10 --max-pause 0.30 --props out/props_ep2.json
+EP_COMP=Ep002Changthang EP_PROPS=out/props_ep2.json EP_OUT=ep002-raw.mp4 node scripts/render.cjs final
+python3 scripts/master.py out/ep002-raw.mp4 out/ep002-changthang.mp4
+python3 scripts/qa_motion.py out/ep002-changthang.mp4
+```
+
 ## Silent animatic (18 Nov 2026, 0 credits)
 
 The approved pilot build, made entirely in code:

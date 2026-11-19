@@ -3,7 +3,7 @@ name: youtube-shorts
 description: Produce a fact-checked, low-credit 9:16 YouTube Shorts series end to end — research and verify, script, generate assets on Higgsfield, voice, animate in Remotion, QA, upload and cross-post. Default series is "What India Eats" (one Short per Indian district, breakfast→lunch→dinner, hosted by the original mascot Seetu the pressure cooker), but every stage is reusable for any fact-based Shorts series. Use when the user asks for the next episode, a district/state episode, research for an episode, a script, assets, voice, an edit, an upload pack, a season plan, or says "What India Eats" or "Seetu".
 ---
 
-# YouTube Shorts series skill (v0.3: 3D Seetu + voiced pilot built, real costs measured)
+# YouTube Shorts series skill (v0.4 draft: EP002 built with the EP001 review fixes; awaiting approval)
 
 This skill runs **one pipeline**: research → verify → script → assets → voice → edit → QA → upload → learn.
 
@@ -46,9 +46,9 @@ Accuracy comes first, then virality, then cost. When they conflict, follow that 
 | 2. Verify | 2-independent-source rule; contradiction pass; sensitivity pass; local reviewer sign-off where needed | Every row has a status + Data basis + sources | `references/verification-checklist.md` |
 | 3. Script | Fill the fixed episode template; 115–130 words; fact-check table with row IDs; variety rule (change ≥3 of 6 elements vs the last episode) | `scripts/epNNN-<district>.md` | `references/episode-template.md` |
 | 4. Assets | **Code-first:** reuse Seetu (`pilot/src/Seetu.tsx`, `sprites` mode = 3D layers) and draw new scenes and food as SVG components from the data-table descriptions (0 credits). Reuse the SFX library. AI dish stills only if the user opts in; then quote → approve → batch → log job ids | `src/scenes/*.tsx` (+ `prompts.md` if AI is used) | `references/character-bible.md`, `references/low-credit-rules.md`, `what-india-eats/library/seetu/3d/README.md` |
-| 5. Voice | One Qwen TTS line per caption cue (Leo), each with its own emotion instruction; respell names; submit 2 at a time; transcribe every line; retake any that drop words | `VO_DIR/00.wav…NN.wav` | `references/sound-guide.md` |
-| 6. Edit / animate | Copy `what-india-eats/pilot/` as the template: `Ep001.tsx` (shots + caption cues + sound cues in script time), `make_audio.py`, `build_timing.py` (fits the edit to the voice), `render.cjs` (`EP_PROPS=out/props.json`: stills / preview / final). Keep faces and food out of the caption band (y ≈ 1250–1460) and text out of the bottom 20% and right 12% | Preview 540×960 | `what-india-eats/pilot/README.md` |
-| 7. QA | Fact-check table re-read against the final cut. Then: contact sheet of key stills; pop scan (`ffmpeg select='gt(scene,0.18)'`, only at planned cuts); safe zones; caption sync; master with `scripts/master.py` (−14 LUFS, ≤ −1.5 dBTP) | Final 1080×1920 MP4 | `references/verification-checklist.md` §QA |
+| 5. Voice | One Qwen TTS line per caption cue (Leo, `speech_rate` 1.0), each with its own emotion instruction (≤ 128 chars); respell names; submit 2 at a time; transcribe every line; retake any that drop or blur words (≈ 0.02 credits each) | `VO_DIR/00.wav…NN.wav` | `references/sound-guide.md` |
+| 6. Edit / animate | New folder `pilot/src/epNNN/`: `timing.json` (cues, story-beat events, shots, pace) + `EpNNN.tsx` (shots and sound cues in script time, on the shared `engine.tsx`: `Episode`, `Cam`) + `art.tsx` for new scenery and food; register it in `Root.tsx`. Follow the **motion rules** (no frozen frames). Fit to the voice with `build_timing.py --config src/epNNN/timing.json --tempo 1.10 --max-pause 0.30 --sprites`, render with `EP_COMP=… EP_PROPS=… node scripts/render.cjs final`. Keep faces and food out of the caption band (y ≈ 1250–1460) and text out of the bottom 20% and right 12% | Final 1080×1920 | `what-india-eats/pilot/README.md`, `references/episode-template.md` |
+| 7. QA | Fact-check table re-read against the final cut. Then: contact sheet of key stills; **`pilot/scripts/qa_motion.py final.mp4` must show no still stretch > 0.5 s and no glitch frame**; speech-to-text of the final mix (every line present, in order); safe zones; caption sync; master with `scripts/master.py` (−14 LUFS, ≤ −1.5 dBTP) | Final 1080×1920 MP4 | `references/verification-checklist.md` §QA |
 | 8. Upload | Title / description / sources / hashtags / pinned question / playlist / related video / disclosure; then IG + FB native uploads | Upload pack `upload.md` | `references/upload-checklist.md` |
 | 9. Learn | After 48 h and 7 days: retention graph, swipe-away rate, top geographies, comments → corrections queue | `log.md` row | `references/upload-checklist.md` §Learn |
 
@@ -94,7 +94,7 @@ Commit code from this session and pull it in the sandbox. Keep CDN URLs (they co
 
 - **Route:** clockwise journey (Ladakh → … → Madhya Pradesh). The counter shows "District N / 793", where 793 = 791 administrative districts plus Mahé and Yanam (as of 18 Nov 2026). Re-check the counts before each season.
 - **Format:**
-  - 45 s target (35–60 s). A real voice runs at ≈ 2.8 words/s, so write ≈ 105–110 words for 45 s (EP001's 136 words run 58 s).
+  - 50–60 s. At the EP002 pace (≈ 2.1 words/s while talking) write 90–110 words (EP002: 109 words, 60 s).
   - Hook 0–2 s → arrival → breakfast → lunch → dinner → unique fact → cliffhanger.
   - Whistle counts 1/2/3 mark the meals; the Steam-o-meter (0–3 puffs) rates spice.
   - "Three whistles — done!" closes every episode.

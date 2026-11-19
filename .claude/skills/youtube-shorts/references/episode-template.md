@@ -7,8 +7,8 @@
 |---|---|
 | Route position | District **NNN / TOTAL** · Season SS (<State>, N districts) · previous: <A> · next: <B> |
 | Contrast role | one word + why (vs the neighbour) |
-| Length | 35–55 s (target 45) · 9:16 · 1080×1920 |
-| VO | 115–130 words (~2.7 words/s) |
+| Length | 50–60 s · 9:16 · 1080×1920 |
+| VO | 90–110 words at the EP002 pace (≈ 2.1 words/s while talking; 90 words ≈ 50 s, 110 ≈ 60 s) |
 | Data rows | <STATE>-<DST>-B, -L, -D, -FACT |
 
 ## Fact check
@@ -48,6 +48,13 @@ Compared with the previous episode, change **at least 3** of these:
 6. fact visual type (diagram · map · object · comparison)
 
 Rotate the title formulas too. Never re-use a sentence of narration from an earlier episode except the catchphrases.
+
+## Motion rules (no frozen frames; from the EP001 review)
+EP001's first cut froze for ≈ 17 s of 58 s: the voice ran longer than the animation keys, so shots finished and held. Every episode now follows these rules, and `pilot/scripts/qa_motion.py` must report **no still stretch over 0.5 s and no glitch frame** before upload.
+1. **Time shots to the voice you expect** (≈ 2.1 words/s plus beats), so the voice map barely stretches them.
+2. **Something always moves:** wrap every scene in `<Cam>` (slow push/pan), keep Seetu's `idle` on (breathing; bounce and nod while talking), and give each background ambient motion (clouds, flags, herds, snow, steam, stars, fire).
+3. **One new visual beat per voice line** (a prop arrives, a card pops, a pose or gag changes). A line longer than 4 s gets a second beat in the middle.
+4. Story beats that depend on the voice (whistles, a host's reply, the sting) are `events` in the episode's `timing.json`, so they always land after the right line.
 
 ## Writing rules
 - One fact per beat. Short sentences. Questions are welcome.

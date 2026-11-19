@@ -52,11 +52,14 @@ The full rationale is in `what-india-eats/05-sound/sound-guide.md`.
   - `generate_audio_batch` with `qwen_audio_tts`, `voice_type: preset`, `voice_id: 73a45c18-0c56-4642-a61e-f6b303f8ded1` (Leo), `language: en`, `format: wav`, `sample_rate: 48000`, `speech_rate` 1.05–1.15.
   - **One request per caption line**, each with its own `instruction` for the moment, e.g. "Shocked, delighted disbelief, high energy" (hook), "Cosy, soft and warm, evening calm" (dinner), "Suspicious and playful, a teasing question" (Every day…?). End every instruction with "light natural Indian English accent".
   - Only Leo and Mark worked with Qwen; other presets returned "not available for Qwen Audio". A second character (the host) uses Mark.
+  - **`instruction` is at most 128 characters** (longer → 422). Keep the accent note short: "light Indian English accent; unhurried".
+  - **Pace after the EP001 review ("delivery too fast"), used for EP002:** generate at `speech_rate` 1.0, then `build_timing.py --tempo 1.10 --max-pause 0.30` → ≈ 2.1 words/s while talking. EP001's 2.8 words/s (rate 1.1–1.15, tempo 1.15, pauses 0.22 s) felt rushed; fully natural (tempo 1.0, pauses 0.45 s) was 1.9 words/s and 67 s long.
   - **Submit 2 at a time.** More returns 429 (no charge); wait, then send the next pair.
-  - **Transcribe every line** (faster-whisper `small.en`, with 0.5 s of padding) before the edit. TTS can drop words: "Stop one: Lay, Ladakh!" lost "Stop one"; "Stop one... Lay, Ladakh!" fixed it.
+  - **Transcribe every line** (faster-whisper `small.en`, with 0.5 s of padding) before the edit. TTS drops the words before a colon: "Stop one: Lay, Ladakh!" and "Stop two: Chang-thang…" both lost "Stop N". Write "Stop two... " instead.
+  - **Respellings that passed:** See-too, Lay (Leh), goor-goor cha, kham-beer, kho-lak, chur-peh (churpe), tsahm-pa (heard as "sampa", acceptable), Chaang-thaang (Changthang; "Chang-thang" came out "Chung Tong"), "tuk-pa..." (thukpa; "took-pa, warm" blurred into "took power warm"), Noo-bra, pash-meena.
   - ~0.02 credits per line, ~0.44 per episode.
   - Later: `create_voice` from a consenting speaker's 30–60 s in-character recording, then the same calls with `voice_type: element`.
 - **Never** clone or imitate a real person or celebrity without written consent. Never use a caricature accent.
 - **Pronunciation:** respell local names in the TTS text. Re-render only the broken phrase and splice it in. The reviewer signs off.
 - **Timing:** `what-india-eats/pilot/scripts/build_timing.py --vo VO_DIR --host host.wav --tempo 1.15 --max-pause 0.22 --sprites` trims each line, shortens long pauses inside it, speeds it 1.15× (sox, pitch kept), places the lines in order and writes the script→real time map, captions and lip-flap track. Shots never get squeezed more than 1.4×, a line never runs over a cut, and story beats (meal whistles, the host's reply, the closing sting) stay after their lines.
-- **Length:** a real voice runs at ≈ 2.8 words/s, so the 136-word EP001 is 58 s. **For a 45 s episode, write ≈ 105–110 words.**
+- **Length:** at the EP002 pace (≈ 2.1 words/s while talking, plus whistles, gags and the loop), **90 words ≈ 50 s and 110 words ≈ 60 s**. EP002 (109 words) is 60 s.

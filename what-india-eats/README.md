@@ -13,7 +13,9 @@
 | Ladakh season research (all 8 districts) | ✅ Done: [`01-research/ladakh-food-table.md`](01-research/ladakh-food-table.md) (1 dish row Verified, 23 Partially verified; local reviewer needed, especially for Drass and Sankoo) |
 | 3D Seetu | ✅ Polished 3D-look render (variant 1 of 4), faceless lid/body layers for the video, and a 3D model (GLB). 5.5 credits. Ids: [`library/seetu/3d/README.md`](library/seetu/3d/README.md) |
 | **EP001 voiced 3D cut** | ✅ 58 s, 1080×1920, −14 LUFS: 3D Seetu with drawn face and lip-flap, 21 voiced lines + host, 6 real SFX, captions synced to the voice. In your **Higgsfield library** as `ep001-leh-voiced-3d-v2.mp4`. Build: [`pilot/README.md`](pilot/README.md) |
-| Skill | ✅ v0.3 with the real pipeline and costs: [`../.claude/skills/youtube-shorts/SKILL.md`](../.claude/skills/youtube-shorts/SKILL.md) |
+| EP001 review | Voice too fast; animation froze (11 still stretches, ≈ 17 s of 58 s). Fixed in the engine and applied to EP002 (EP001 not regenerated, as asked) |
+| **EP002 Changthang** | ✅ 60 s, slower voice (2.1 words/s), no-freeze motion, yak/herd SFX. Script: [`04-scripts/ep002-changthang-ladakh.md`](04-scripts/ep002-changthang-ladakh.md). In your **Higgsfield library** as `ep002-changthang.mp4` |
+| Skill | 📝 v0.4 draft with the review fixes, **waiting for your approval** to save: [`../.claude/skills/youtube-shorts/SKILL.md`](../.claude/skills/youtube-shorts/SKILL.md) |
 
 ## What's in here
 
