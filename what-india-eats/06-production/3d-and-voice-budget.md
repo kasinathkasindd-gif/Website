@@ -1,6 +1,45 @@
 # 3D Seetu + voice-over: credit budget
 
-**Quoted live from your Higgsfield account on 18 Nov 2026 with the free cost-check tools. Nothing has been spent.** Prices can change, so each batch is re-quoted and needs your "yes" before it runs.
+**Update 19 Nov 2026: the Lean test is done and paid for. It cost 9.07 credits, not the 82 quoted below.** Balance: 200.15 → **191.08**. Sections 1–5 are the original quotes from 18 Nov, kept for reference.
+
+## 0. What was actually spent (live balance, 19 Nov 2026)
+
+| Step | Model (Higgsfield) | Qty | Credits |
+|---|---|---|---|
+| Polished 3D-look Seetu, 4 variants (picked #1: front view, relaxed arms) | GPT Image 2.6, medium, 2k, transparent | 4 | 4.00 |
+| Faceless, limbless pot: the input for 3D and the layers used in the video | GPT Image 2.6, medium, **1k**, transparent | 1 | 0.50 |
+| 3D model (GLB: pot, lid, whistle, handle, scarf) | **SAM 3 3D Objects** (instead of Tripo H3.1 at 9) | 1 | 1.00 |
+| Voice auditions (Leo vs Mark) | Qwen TTS | 2 | 0.04 |
+| EP001 voice: 21 lines, one emotion each, plus 1 retake | Qwen TTS, voice **Leo** | 22 | 0.44 |
+| Host's "Every day!" (a second voice) | Qwen TTS, voice Mark | 1 | 0.02 |
+| Real sound effects: wind, ladle, butter-tea churn, tea pour, jeep, wood stove | Mirelo SFX, 2 s each | 6 | 3.00 |
+| Rendering, timing, mastering, uploads | Higgsfield sandbox | — | 0.00 |
+| **Total** | | | **≈ 9.07** |
+
+Why it came in so far under the 82-credit quote:
+- **No rigging.** Seetu is a pot on stick legs, so an auto-rig was a gamble. Instead the video uses **2.5D**: the polished render is cut into a lid layer and a body layer (so the lid still pops), while the face, arms and legs stay drawn in code. That keeps every expression and the lip-flap, for 0 credits per episode.
+- **1-credit 3D model.** SAM 3 3D gave a clean, textured GLB of the pot for 1 credit (Tripo was 9). It is kept for turnarounds, thumbnails and future spin shots.
+- **1k instead of 2k** for anything that is not a hero image (0.5 instead of 1.0).
+
+What you get from it: `pilot/` renders **EP001 with 3D Seetu, a situational voice-over (one emotion per line), lip-flap, a host voice, real SFX, ducked music, and captions synced to the voice**. Length is 58 s, because a real voice at a natural 2.8 words/s is slower than the 46 s silent cut.
+
+**Rate limits seen:** Qwen TTS accepts about 2 jobs at a time (submit in pairs; a 429 costs nothing). Mirelo took 2 at a time.
+
+## 6. How far the remaining 191 credits go
+
+Per-episode cost from EP001's real numbers. Seetu (3D layers + vector face), scenes, food, music and the sound library are reused, so they cost 0.
+
+| Tier | What is paid per episode | Credits / episode (incl. +20% retakes) | Episodes from 191 credits | Route reached (complete seasons) |
+|---|---|---|---|---|
+| **Lean (recommended)** | ~22 voice lines with emotion | **≈ 0.55** | **≈ 347** | Ladakh → … → **Mizoram**: **17 states/UTs** (345 episodes) |
+| Lean+ | Lean + 1 new real SFX | ≈ 1.15 | ≈ 166 | Ladakh → **Uttarakhand** (8 seasons, 113) + 53 of Uttar Pradesh's 75 |
+| Standard | Lean+ + 3 AI dish close-ups + 1 AI backdrop (1k, 0.5 each) | ≈ 3.55 | ≈ 53 | Ladakh, J&K, Himachal (3 seasons, 40) + 13 of Punjab |
+
+Route totals used (cumulative episodes): Ladakh 8 · J&K 28 · Himachal 40 · Punjab 63 · Chandigarh 64 · Haryana 87 · Delhi 100 · Uttarakhand 113 · Uttar Pradesh 188 · Bihar 226 · Jharkhand 250 · West Bengal 273 · Sikkim 279 · Assam 314 · Meghalaya 326 · Tripura 334 · Mizoram 345 · Manipur 361 · Nagaland 378.
+
+- **The whole series (793 episodes) at Lean ≈ 436 credits.** 191 credits cover about 44% of India.
+- **Best value:** Lean everywhere, plus a small launch reserve. For example, keep ~15 credits for the first season (8 episodes) to add a real SFX or a dish close-up where a scene needs one. That still leaves ≈ 320 Lean episodes.
+- **Time, not credits, is the limit.** One Lean episode a day costs ≈ 17 credits a month, so 191 credits last ≈ 11 months of daily uploads. Research is the real bottleneck: each district needs verified rows (2 sources) and a reviewer pass.
 
 ## 1. How the 3D version will work (so that each episode stays cheap)
 

@@ -37,8 +37,8 @@ export const CUES: Cue[] = [
   {from: 31.1, to: 35.0, text: 'Mind blown: researchers found rice used to be a luxury in Ladakh.'},
   {from: 35.0, to: 37.6, text: 'Today, cheap subsidised rice from the plains is everyday food,'},
   {from: 37.6, to: 39.4, text: 'and local barley is fading.'},
-  {from: 41.45, to: 42.6, text: 'Three whistles — done!'},
-  {from: 42.65, to: 44.0, text: 'Just one more… Changthang!'},
+  {from: 41.45, to: 42.25, text: 'Three whistles — done!'},
+  {from: 42.3, to: 44.0, text: 'Just one more… Changthang!'}, // lands on the plateau reveal
 ];
 
 // ---------------------------------------------------------------- shots
@@ -457,7 +457,7 @@ const SFX: S[] = [
   {f: 'whoosh', at: 32.45, db: -16},
   {f: 'stamp', at: 39.77, db: -6},
   {f: 'sting', at: 40.0, db: -3},
-  {f: 'chug', at: 41.8, db: -14},
+  {f: 'chug', at: 41.8, db: -15, dur: 2.2, duck: true}, // ducked so 'Changthang' stays clear
   {f: 'steam_burst', at: 44.0, db: -14},
 ];
 
