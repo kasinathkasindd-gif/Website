@@ -193,7 +193,7 @@ while tt < d - 0.12:
 save("chug", cg * np.linspace(0.4, 1, len(cg)))
 
 # ---------------- music beds (original) ----------------
-def bed_breakfast(d=7.5, bpm=92):
+def bed_breakfast(d=12.0, bpm=92):
     out = np.zeros(int(d * SR) + SR)
     t = T(d)
     drone = 0.25 * np.sin(2 * np.pi * 110 * t) + 0.18 * np.sin(2 * np.pi * 164.81 * t) + 0.08 * np.sin(2 * np.pi * 220 * t)
@@ -212,7 +212,7 @@ def bed_breakfast(d=7.5, bpm=92):
     return out[: int(d * SR)] * env(int(d * SR), 0.15, 0.6)
 
 
-def bed_lunch(d=9.5, bpm=108):
+def bed_lunch(d=12.0, bpm=108):
     out = np.zeros(int(d * SR) + SR)
     beat = 60 / bpm
     roots = [73.42, 73.42, 110.0, 98.0]
@@ -233,7 +233,7 @@ def bed_lunch(d=9.5, bpm=108):
     return out[: int(d * SR)] * env(int(d * SR), 0.1, 0.6)
 
 
-def bed_dinner(d=6.5, bpm=80):
+def bed_dinner(d=10.0, bpm=80):
     out = np.zeros(int(d * SR) + SR)
     t = T(d)
     drone = 0.22 * np.sin(2 * np.pi * 146.83 * t) + 0.16 * np.sin(2 * np.pi * 220 * t)
@@ -257,4 +257,12 @@ def bed_dinner(d=6.5, bpm=80):
 save("bed_breakfast", bed_breakfast())
 save("bed_lunch", bed_lunch())
 save("bed_dinner", bed_dinner())
+
+# wood-stove crackle under dinner (the voiced cut replaces it with a recorded/AI one when available)
+d = 10.0
+fire = 0.22 * noise(d, 70, 500) * (0.65 + 0.35 * np.sin(2 * np.pi * 0.31 * T(d)))
+for k in range(int(d * 11)):
+    c = noise(0.014, 1400, 9000) * np.exp(-T(0.014) * 260) * rng.uniform(0.25, 1.0)
+    place(fire, c, rng.uniform(0, d - 0.05), -3)
+save("fire", fire * env(int(d * SR), 0.5, 0.8))
 print("done ->", os.path.abspath(OUT))

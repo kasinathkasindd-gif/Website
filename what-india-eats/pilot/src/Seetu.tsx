@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {staticFile} from 'remotion';
 import {INK, STEEL, HI, SHADE, RED, TURMERIC, WHITE, BLUSH, MOUTH, TONGUE} from './theme';
+import {EpCtx, useAbsFrame} from './timing';
 
 // Vector rig ported from library/seetu/build_seetu.py (approved design v0.1).
 // Drawn in a 1000x1000 box; anchor = midpoint between the feet at (500, 905).
@@ -31,10 +33,25 @@ export type SeetuProps = {
   blink?: boolean;
   look?: [number, number];
   squash?: number; // 1 = normal, <1 squashed
+  talk?: boolean; // lip-flap to the voice-over when it plays (default true)
 };
 
 const BODY =
   'M 290 440 C 262 500, 248 560, 252 615 C 256 690, 280 750, 330 770 L 670 770 C 720 750, 744 690, 748 615 C 752 560, 738 500, 710 440 Z';
+
+// 3D-rendered sprites (library/seetu/3d): a polished render of the approved design, cut at the gasket line into
+// a lid layer (dome, rim, whistle, handle) and a body layer (pot + scarf). Placed in rig units so the vector
+// face, arms and legs still line up. Measured by scripts/cut_sprites.py.
+const SPR = {
+  lid: {x: 145.29, y: 241.15, w: 564.54, h: 258.36},
+  body: {x: 273.76, y: 466.68, w: 494.6, h: 307.61},
+  open: {cx: 501, cy: 471, rx: 198, ry: 17},
+};
+// The sprite body is a little narrower than the vector one and the scarf sits higher, so the face is
+// scaled to 0.8 and moved just below the scarf.
+const FACE_SPRITE = 'translate(500 522) scale(0.8) translate(-500 -462)';
+// Start each arm 40 units inside the body so no gap shows against the narrower sprite.
+const inward = (d: string, dx: number) => d.replace(/^M (-?[\d.]+) (-?[\d.]+)/, (_m, x, y) => `M ${Number(x) + dx} ${y} L ${x} ${y}`);
 
 const Mitt: React.FC<{cx: number; cy: number; rot: number}> = ({cx, cy, rot}) => (
   <g transform={`translate(${cx} ${cy}) rotate(${rot})`}>
@@ -83,7 +100,7 @@ const armDef = (side: 'L' | 'R', pose: Arm, wave = 0): ArmDef => {
   return {d, mitt: [mx, my, mr]};
 };
 
-const EyesG: React.FC<{kind: Eyes; look: [number, number]; blink: boolean}> = ({kind, look, blink}) => {
+const EyesG: React.FC<{kind: Eyes; look: [number, number]; blink: boolean; lidFill?: string}> = ({kind, look, blink, lidFill = STEEL}) => {
   const out: React.ReactNode[] = [];
   const k = blink && (kind === 'open' || kind === 'wide') ? 'closed' : kind;
   [430, 570].forEach((cx, i) => {
@@ -103,7 +120,7 @@ const EyesG: React.FC<{kind: Eyes; look: [number, number]; blink: boolean}> = ({
     } else if (k === 'squint') {
       out.push(<ellipse key={`e${i}`} cx={cx} cy={598} rx={52} ry={40} fill={WHITE} stroke={INK} strokeWidth={10} />);
       out.push(<circle key={`p${i}`} cx={cx + 14 + look[0]} cy={606} r={22} fill={INK} />);
-      out.push(<path key={`l${i}`} d={`M ${cx - 56} 590 Q ${cx} 566 ${cx + 56} 590 L ${cx + 56} 556 L ${cx - 56} 556 Z`} fill={STEEL} />);
+      out.push(<path key={`l${i}`} d={`M ${cx - 56} 590 Q ${cx} 566 ${cx + 56} 590 L ${cx + 56} 556 L ${cx - 56} 556 Z`} fill={lidFill} />);
       out.push(<path key={`ll${i}`} d={`M ${cx - 54} 590 Q ${cx} 572 ${cx + 54} 590`} stroke={INK} strokeWidth={10} fill="none" strokeLinecap="round" />);
     }
   });
@@ -166,6 +183,14 @@ export const STEAM_SPICY = [
   'M 700 430 C 760 440 830 420 850 380 C 860 350 825 335 800 352 C 795 320 750 318 738 345 C 720 330 690 350 700 380 Z',
 ];
 
+// Lip-flap: map voice loudness (0..1) to a mouth, keeping the pose's own closed shape between syllables.
+const talkMouth = (pose: Mouth, m: number): Mouth => {
+  const level = (m - 0.05) / 0.95;
+  if (level > 0.55) return 'big';
+  if (level > 0.25) return 'o';
+  return pose === 'flat' || pose === 'wavy' || pose === 'smile' ? pose : 'smile';
+};
+
 export const Seetu: React.FC<SeetuProps> = ({
   id,
   x,
@@ -188,7 +213,12 @@ export const Seetu: React.FC<SeetuProps> = ({
   blink = false,
   look = [0, 0],
   squash = 1,
+  talk = true,
 }) => {
+  const {mouth: env, sprites} = useContext(EpCtx);
+  const absF = useAbsFrame();
+  const m = env[absF] ?? 0;
+  const mouthNow: Mouth = talk && m > 0 ? talkMouth(mouth, m) : mouth;
   const aL = armDef('L', armL, wave);
   const aR = armDef('R', armR, wave);
   // walk cycle: feet swing and lift, body bobs
@@ -200,14 +230,8 @@ export const Seetu: React.FC<SeetuProps> = ({
   const t = `translate(${x} ${y}) rotate(${rotate}) scale(${sx} ${scale}) translate(-500 -905)`;
   const body = `translate(0 ${bob}) translate(500 770) scale(${1 + (1 - squash) * 0.6} ${squash}) translate(-500 -770)`;
   const lid = `translate(0 ${lidLift}) rotate(${lidTilt} 500 420)`;
-  return (
-    <g transform={t}>
-      <defs>
-        <clipPath id={`body-${id}`}>
-          <path d={BODY} />
-        </clipPath>
-      </defs>
-      {/* legs + shoes */}
+  const legs = (
+    <>
       <path
         d={`M 432 760 L ${424 + fL[0]} ${868 + fL[1]} M 568 760 L ${576 + fR[0]} ${868 + fR[1]}`}
         stroke={INK}
@@ -216,6 +240,61 @@ export const Seetu: React.FC<SeetuProps> = ({
       />
       <Shoe x={424 + fL[0]} y={892 + fL[1]} flip />
       <Shoe x={576 + fR[0]} y={892 + fR[1]} />
+    </>
+  );
+  const blushG = blush && (
+    <g>
+      <ellipse cx={368} cy={660} rx={30} ry={17} fill={BLUSH} opacity={0.85} />
+      <ellipse cx={632} cy={660} rx={30} ry={17} fill={BLUSH} opacity={0.85} />
+    </g>
+  );
+  const steamG = steam.map((d, i) => <path key={i} d={d} fill={WHITE} fillOpacity={0.94} stroke={SHADE} strokeWidth={6} />);
+  const mitts = (
+    <>
+      <Mitt cx={aL.mitt[0]} cy={aL.mitt[1]} rot={aL.mitt[2]} />
+      <Mitt cx={aR.mitt[0]} cy={aR.mitt[1]} rot={aR.mitt[2]} />
+    </>
+  );
+
+  if (sprites) {
+    // 2.5D: 3D-rendered pot (two layers) + vector face, arms and legs.
+    return (
+      <g transform={t}>
+        {legs}
+        <g transform={body}>
+          <path d={inward(aL.d, 40)} stroke={INK} strokeWidth={16} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={inward(aR.d, -40)} stroke={INK} strokeWidth={16} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          {lidLift < -1 && (
+            <ellipse cx={SPR.open.cx} cy={SPR.open.cy} rx={SPR.open.rx} ry={SPR.open.ry} fill="#2C2D31" stroke="#C9CDD3" strokeWidth={7} />
+          )}
+          <image href={staticFile('seetu3d/body.png')} x={SPR.body.x} y={SPR.body.y} width={SPR.body.w} height={SPR.body.h} />
+          {flush > 0 && <ellipse cx={500} cy={650} rx={210} ry={110} fill={RED} opacity={0.22 * flush} style={{mixBlendMode: 'multiply'}} />}
+          <g transform={FACE_SPRITE}>
+            {blushG}
+            {BROWS[brows].map((d, i) => (
+              <path key={i} d={d} stroke={INK} strokeWidth={16} fill="none" strokeLinecap="round" />
+            ))}
+            <EyesG kind={eyes} look={look} blink={blink} lidFill="#DADCE1" />
+            <MouthG kind={mouthNow} />
+          </g>
+          {steamG}
+          <g transform={lid}>
+            <image href={staticFile('seetu3d/lid.png')} x={SPR.lid.x} y={SPR.lid.y} width={SPR.lid.w} height={SPR.lid.h} />
+          </g>
+          {mitts}
+        </g>
+      </g>
+    );
+  }
+
+  return (
+    <g transform={t}>
+      <defs>
+        <clipPath id={`body-${id}`}>
+          <path d={BODY} />
+        </clipPath>
+      </defs>
+      {legs}
       <g transform={body}>
         {/* arms behind body */}
         <path d={aL.d} stroke={INK} strokeWidth={16} fill="none" strokeLinecap="round" />
@@ -237,24 +316,16 @@ export const Seetu: React.FC<SeetuProps> = ({
           {flush > 0 && <ellipse cx={500} cy={640} rx={260} ry={170} fill={RED} opacity={0.16 * flush} />}
         </g>
         <path d={BODY} fill="none" stroke={INK} strokeWidth={12} strokeLinejoin="round" />
-        {blush && (
-          <g>
-            <ellipse cx={368} cy={660} rx={30} ry={17} fill={BLUSH} opacity={0.85} />
-            <ellipse cx={632} cy={660} rx={30} ry={17} fill={BLUSH} opacity={0.85} />
-          </g>
-        )}
+        {blushG}
         {/* face */}
         {BROWS[brows].map((d, i) => (
           <path key={i} d={d} stroke={INK} strokeWidth={16} fill="none" strokeLinecap="round" />
         ))}
         <EyesG kind={eyes} look={look} blink={blink} />
-        <MouthG kind={mouth} />
-        <Mitt cx={aL.mitt[0]} cy={aL.mitt[1]} rot={aL.mitt[2]} />
-        <Mitt cx={aR.mitt[0]} cy={aR.mitt[1]} rot={aR.mitt[2]} />
+        <MouthG kind={mouthNow} />
+        {mitts}
         {/* steam (in the lid gap / around) */}
-        {steam.map((d, i) => (
-          <path key={i} d={d} fill={WHITE} fillOpacity={0.94} stroke={SHADE} strokeWidth={6} />
-        ))}
+        {steamG}
         {/* lid: dome + rim + whistle */}
         <g transform={lid}>
           <path d="M 285 428 C 300 342, 400 318, 500 318 C 600 318, 700 342, 715 428 Z" fill={STEEL} stroke={INK} strokeWidth={12} strokeLinejoin="round" />

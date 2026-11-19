@@ -1,3 +1,6 @@
 node_modules/
 out/
 *.log
+# per-run assets made on Higgsfield (see README): voice lines and 3D sprite layers
+public/vo/
+public/seetu3d/

@@ -1,5 +1,6 @@
-import React from 'react';
-import {AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import React, {useContext} from 'react';
+import {AbsoluteFill, Audio, Img, Sequence, interpolate, spring, staticFile, useVideoConfig} from 'remotion';
+import {EpCtx, EpProps, ShotCtx, Timing, makeWarp, useShotFrame, useToReal} from './timing';
 import {Seetu, STEAM_POP, STEAM_SPICY, isBlinking, steamPath} from './Seetu';
 import {
   BurstBG, KitchenBG, ExteriorBG, RouteBG, PlateauBG, ROUTE_STOPS, Jeep, TeaCup, Steam, Churn, BarleyBowl, Kettle,
@@ -36,13 +37,14 @@ export const CUES: Cue[] = [
   {from: 31.1, to: 35.0, text: 'Mind blown: researchers found rice used to be a luxury in Ladakh.'},
   {from: 35.0, to: 37.6, text: 'Today, cheap subsidised rice from the plains is everyday food,'},
   {from: 37.6, to: 39.4, text: 'and local barley is fading.'},
-  {from: 39.6, to: 41.8, text: 'Three whistles — done!'},
-  {from: 41.8, to: 44.0, text: 'Just one more… Changthang!'},
+  {from: 41.45, to: 42.6, text: 'Three whistles — done!'},
+  {from: 42.65, to: 44.0, text: 'Just one more… Changthang!'},
 ];
 
 // ---------------------------------------------------------------- shots
 const ShotHook: React.FC<{loop?: boolean}> = ({loop}) => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const {fps} = useVideoConfig();
   const t = f / fps;
   const rise = loop ? 0 : spring({frame: f - 2, fps, config: {damping: 11, stiffness: 160}});
@@ -76,7 +78,8 @@ const ShotHook: React.FC<{loop?: boolean}> = ({loop}) => {
 };
 
 const ShotRoute: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const {fps} = useVideoConfig();
   const prog = interpolate(f, [0, 40], [0, 1], clamp);
   const jump = spring({frame: f - 18, fps, config: {damping: 14, stiffness: 90}});
@@ -89,13 +92,14 @@ const ShotRoute: React.FC = () => {
       <Full>
         <Seetu id="route" x={x} y={y} scale={0.3} armR={jump > 0.95 ? 'wave' : 'up'} armL="down" wave={f / 14} blink={isBlinking(f)} mouth="big" />
       </Full>
-      <Badge text="District 1 / 793" top={1110} delay={6} bg={RED} color="#FFFFFF" />
+      <Badge text="District 1 / 793" top={1110} delay={R(6)} bg={RED} color="#FFFFFF" />
     </AbsoluteFill>
   );
 };
 
 const ShotArrival: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const {fps} = useVideoConfig();
   const jx = interpolate(f, [0, 24], [1500, 700], {...clamp, easing: (v) => 1 - Math.pow(1 - v, 3)});
   const bounce = f < 26 ? Math.sin(f * 1.3) * 6 : 0;
@@ -126,13 +130,14 @@ const ShotArrival: React.FC = () => {
           />
         )}
       </Full>
-      <Badge text="📍 Leh, Ladakh" top={210} delay={4} />
+      <Badge text="📍 Leh, Ladakh" top={210} delay={R(4)} />
     </AbsoluteFill>
   );
 };
 
 const ShotBreakfastA: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const plunge = (Math.sin(t * Math.PI * 2 * 1.6) + 1) / 2;
   return (
@@ -143,14 +148,15 @@ const ShotBreakfastA: React.FC = () => {
         <Steam x={360} y={980} t={t} n={2} scale={0.6} />
         <Seetu id="bfa" x={640} y={1155} scale={0.62} eyes="closed" brows="up" mouth="smile" armL="down" armR="cheeks" look={[-10, 0]} steam={[steamPath(500, 220, 26)]} />
       </Full>
-      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={99999} />
-      <DishCard name="gur-gur cha" meaning="butter tea, churned with butter and salt" delay={8} />
+      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={R(99999)} />
+      <DishCard name="gur-gur cha" meaning="butter tea, churned with butter and salt" delay={R(8)} />
     </AbsoluteFill>
   );
 };
 
 const ShotBreakfastB: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const tilt = interpolate(f, [0, 10, 34, 42], [0, 38, 38, 0], clamp);
   const pour = interpolate(f, [10, 16, 32, 36], [0, 1, 1, 0], clamp);
@@ -165,14 +171,15 @@ const ShotBreakfastB: React.FC = () => {
         <text x={520} y={1050} textAnchor="middle" fontFamily={FONT_HEAD} fontSize={34} fill={INK}>khambir</text>
         <Seetu id="bfb" x={740} y={1155} scale={0.6} eyes="open" brows="neutral" mouth="smile" armL="point" armR="down" look={[-16, 6]} blink={isBlinking(f, 11)} />
       </Full>
-      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={99999} />
-      <DishCard name="kholak" meaning="roasted-barley flour kneaded with butter tea" delay={4} />
+      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={R(99999)} />
+      <DishCard name="kholak" meaning="roasted-barley flour kneaded with butter tea" delay={R(4)} />
     </AbsoluteFill>
   );
 };
 
 const ShotSpice: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const w = 30; // meal-1 whistle frame (14.5 s)
   const jump = f >= w ? Math.max(0, 1 - (f - w) / 10) : 0;
@@ -195,14 +202,15 @@ const ShotSpice: React.FC = () => {
           steam={f >= w && f < w + 12 ? [steamPath(500, 250, 46)] : []}
         />
       </Full>
-      <SteamMeter level={0} appearAt={0} scale={1.6} />
-      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={w} />
+      <SteamMeter level={0} appearAt={R(0)} scale={1.6} />
+      <MealChip label="BREAKFAST" emoji="☀️" whistles={1} litAt={R(w)} />
     </AbsoluteFill>
   );
 };
 
 const ShotLunch: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const w = 168; // meal-2 whistle (20.6 s)
   const jet = interpolate(f, [8, 14, 32, 40], [0, 1, 1, 0], clamp);
@@ -232,14 +240,15 @@ const ShotLunch: React.FC = () => {
           steam={f >= w && f < w + 12 ? [steamPath(500, 250, 40)] : []}
         />
       </Full>
-      <MealChip label="LUNCH" emoji="🍚" whistles={2} litAt={w} />
-      <DishCard name="daal-chawal" meaning="rice and lentils, with vegetables" delay={44} />
+      <MealChip label="LUNCH" emoji="🍚" whistles={2} litAt={R(w)} />
+      <DishCard name="daal-chawal" meaning="rice and lentils, with vegetables" delay={R(44)} />
     </AbsoluteFill>
   );
 };
 
 const ShotGuests: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const handIn = interpolate(f, [50, 66], [0, 1], {...clamp, easing: (v) => 1 - Math.pow(1 - v, 3)});
   const handOut = interpolate(f, [84, 100], [0, 1], clamp);
@@ -266,14 +275,15 @@ const ShotGuests: React.FC = () => {
           look={phase === 'squint' ? [-18, 8] : [0, 0]}
         />
       </Full>
-      <MealChip label="LUNCH" emoji="🍚" whistles={2} litAt={99999} />
-      <SpeechBubble text="Every day!" x={560} y={600} delay={48} tail="right" />
+      <MealChip label="LUNCH" emoji="🍚" whistles={2} litAt={R(99999)} />
+      <SpeechBubble text="Every day!" x={560} y={600} delay={R(48)} tail="right" />
     </AbsoluteFill>
   );
 };
 
 const ShotDinner: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const t = f / FPS;
   const w = 186; // meal-3 whistle (30.7 s)
   const jump = f >= w ? Math.max(0, 1 - (f - w) / 9) : 0;
@@ -298,14 +308,15 @@ const ShotDinner: React.FC = () => {
           steam={f >= w && f < w + 10 ? [steamPath(500, 250, 40)] : [steamPath(500, 215, 18 + 4 * Math.sin(t * 3))]}
         />
       </Full>
-      <MealChip label="DINNER" emoji="🌙" whistles={3} litAt={w} />
-      <DishCard name="thukpa" meaning="noodle soup with vegetables, sometimes meat" delay={6} />
+      <MealChip label="DINNER" emoji="🌙" whistles={3} litAt={R(w)} />
+      <DishCard name="thukpa" meaning="noodle soup with vegetables, sometimes meat" delay={R(6)} />
     </AbsoluteFill>
   );
 };
 
 const ShotFact: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const {fps} = useVideoConfig();
   const t = f / fps;
   const lid = interpolate(f, [0, 6, 24, 40], [0, -110, -70, -10], clamp);
@@ -344,13 +355,14 @@ const ShotFact: React.FC = () => {
           look={[0, -14]}
         />
       </Full>
-      <FactCard text="Rice was a luxury here. Now it's everyday." source="Dame & Nüsser, Food Security (2011)" delay={26} />
+      <FactCard text="Rice was a luxury here. Now it's everyday." source="Dame & Nüsser, Food Security (2011)" delay={R(26)} />
     </AbsoluteFill>
   );
 };
 
 const ShotCliff: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   const {fps} = useVideoConfig();
   const stampY = interpolate(f, [0, 8], [-300, 0], {...clamp, easing: (v) => v * v});
   const stampUp = interpolate(f, [14, 24], [0, -500], clamp);
@@ -379,7 +391,7 @@ const ShotCliff: React.FC = () => {
             <rect x={-80} y={-44} width={160} height={40} rx={10} fill={RED} stroke={INK} strokeWidth={8} />
           </g>
         </Full>
-        <Badge text="District 1 ✓  ·  Next: 2 / 793" top={1110} delay={10} bg={RED} color="#FFFFFF" size={44} />
+        <Badge text="District 1 ✓  ·  Next: 2 / 793" top={1110} delay={R(10)} bg={RED} color="#FFFFFF" size={44} />
       </AbsoluteFill>
     );
   }
@@ -391,23 +403,24 @@ const ShotCliff: React.FC = () => {
       <Full>
         <Seetu id="cliff2" x={inX} y={1190} scale={0.38} walk={g < 40 ? g * 0.5 : null} eyes="open" mouth="big" armL="down" armR={g >= 40 ? 'wave' : 'down'} wave={g / 12} blink={isBlinking(g)} />
       </Full>
-      <Badge text="Next: Changthang" top={230} delay={2} />
+      <Badge text="Next: Changthang" top={230} delay={R(2)} />
     </AbsoluteFill>
   );
 };
 
 const ShotLoop: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useShotFrame();
+  const R = useToReal();
   return (
     <AbsoluteFill>
       <ShotHook loop />
-      {f > 4 && f < 48 && <Badge text="Follow the journey →" top={230} delay={5} bg="#FFFFFF" />}
+      {f > 4 && f < 48 && <Badge text="Follow the journey →" top={230} delay={R(5)} bg="#FFFFFF" />}
     </AbsoluteFill>
   );
 };
 
 // ---------------------------------------------------------------- sound
-type S = {f: string; at: number; db: number; dur?: number};
+type S = {f: string; at: number; db: number; dur?: number; duck?: boolean};
 const SFX: S[] = [
   {f: 'whistle_hook', at: 0.0, db: -3},
   {f: 'steam_burst', at: 0.05, db: -9},
@@ -416,25 +429,26 @@ const SFX: S[] = [
   {f: 'twinkle', at: 3.3, db: -16},
   {f: 'whoosh', at: 5.48, db: -14},
   {f: 'jeep', at: 5.5, db: -9},
-  {f: 'wind', at: 5.5, db: -18, dur: 2.0},
+  {f: 'wind', at: 5.5, db: -18, dur: 2.0, duck: true},
   {f: 'door', at: 6.35, db: -10},
   {f: 'tumble', at: 6.45, db: -14},
   {f: 'land', at: 6.98, db: -8},
-  {f: 'bed_breakfast', at: 7.5, db: -11, dur: 7.5},
+  {f: 'bed_breakfast', at: 7.5, db: -11, dur: 7.5, duck: true},
   {f: 'churn', at: 7.6, db: -8, dur: 2.9},
   {f: 'pour', at: 10.85, db: -12},
   {f: 'squish', at: 11.8, db: -10},
   {f: 'pfft', at: 13.85, db: -9},
   {f: 'whistle_G5', at: 14.5, db: -5},
-  {f: 'bed_lunch', at: 15.0, db: -12, dur: 9.5},
+  {f: 'bed_lunch', at: 15.0, db: -12, dur: 9.5, duck: true},
   {f: 'cousin_whistle', at: 15.27, db: -10},
   {f: 'clink', at: 16.6, db: -12},
   {f: 'whistle_B5', at: 20.6, db: -5},
   {f: 'pop', at: 22.6, db: -9},
   {f: 'clink', at: 23.25, db: -9},
   {f: 'whoosh', at: 24.45, db: -15},
-  {f: 'bed_dinner', at: 24.5, db: -11, dur: 6.5},
-  {f: 'wind', at: 24.5, db: -24, dur: 6.5},
+  {f: 'bed_dinner', at: 24.5, db: -11, dur: 6.5, duck: true},
+  {f: 'wind', at: 24.5, db: -24, dur: 6.5, duck: true},
+  {f: 'fire', at: 24.5, db: -21, dur: 6.5, duck: true},
   {f: 'whistle_D6', at: 30.7, db: -5},
   {f: 'steam_burst', at: 31.0, db: -9},
   {f: 'riser', at: 31.05, db: -15},
@@ -447,14 +461,64 @@ const SFX: S[] = [
   {f: 'steam_burst', at: 44.0, db: -14},
 ];
 
-const Sound: React.FC = () => (
-  <>
-    {SFX.map((c, i) => (
-      <Sequence key={i} from={Math.round(c.at * FPS)} durationInFrames={c.dur ? Math.round(c.dur * FPS) : undefined} layout="none">
-        <Audio src={staticFile(`audio/${c.f}.wav`)} volume={Math.pow(10, c.db / 20)} />
-      </Sequence>
-    ))}
-  </>
+const dB = (x: number) => Math.pow(10, x / 20);
+
+const Sound: React.FC = () => {
+  const {warp, timing} = useContext(EpCtx);
+  const lines = timing?.lines ?? [];
+  // Beds and ambience dip 7 dB under the voice, with 0.12 s ramps.
+  const duck = (absFrame: number) => {
+    const t = absFrame / FPS;
+    let d = 0;
+    for (const l of lines) {
+      const k = Math.min(t - (l.start - 0.12), l.start + l.dur + 0.12 - t) / 0.12;
+      d = Math.max(d, Math.min(1, Math.max(0, k)));
+    }
+    return dB(-7 * d);
+  };
+  const bedTrim = timing ? -3 : 0;
+  return (
+    <>
+      {SFX.map((c, i) => {
+        const from = Math.round(warp(c.at) * FPS);
+        const dur = c.dur ? Math.max(1, Math.round(warp(c.at + c.dur) * FPS) - from) : undefined;
+        const base = dB(c.db + (c.duck ? bedTrim : 0));
+        const vol = c.duck && dur ? (f: number) => base * duck(from + f) * Math.min(1, (dur - f) / 12) : base;
+        return (
+          <Sequence key={i} from={from} durationInFrames={dur} layout="none">
+            <Audio src={staticFile(`audio/${c.f}.wav`)} volume={vol} />
+          </Sequence>
+        );
+      })}
+      {lines.map((l) => (
+        <Sequence key={`vo${l.i}`} from={Math.round(l.start * FPS)} layout="none">
+          <Audio src={staticFile(l.file)} />
+        </Sequence>
+      ))}
+      {(timing?.extra ?? []).map((e, i) => (
+        <Sequence key={`x${i}`} from={Math.round(e.start * FPS)} layout="none">
+          <Audio src={staticFile(e.file)} volume={dB(e.db)} />
+        </Sequence>
+      ))}
+    </>
+  );
+};
+
+// Captions follow the real voice: each line shows from its first word until the next line (max 0.6 s after it ends).
+const voCues = (timing: Timing, loopAt: number): Cue[] =>
+  timing.lines.map((l, k) => {
+    const next = timing.lines[k + 1];
+    const end = l.start + l.dur;
+    const to = next ? Math.min(next.start - 0.02, end + 0.6) : Math.min(end + 0.8, loopAt - 0.03);
+    return {from: Math.max(0, l.start - 0.05), to: Math.max(to, end), text: CUES[l.i].text};
+  });
+
+// SVG <image> loads are not awaited by the renderer, so load the sprites once through <Img> (which is).
+const SpritePreload: React.FC = () => (
+  <div style={{position: 'absolute', width: 1, height: 1, opacity: 0, overflow: 'hidden'}}>
+    <Img src={staticFile('seetu3d/body.png')} />
+    <Img src={staticFile('seetu3d/lid.png')} />
+  </div>
 );
 
 // ---------------------------------------------------------------- composition
@@ -474,15 +538,29 @@ const SHOTS: [number, number, React.FC][] = [
 ];
 export const DURATION_S = 46;
 
-export const Ep001: React.FC = () => (
-  <AbsoluteFill style={{background: '#000'}}>
-    <Fonts />
-    {SHOTS.map(([a, b, C], i) => (
-      <Sequence key={i} from={sec(a)} durationInFrames={sec(b) - sec(a)}>
-        <C />
-      </Sequence>
-    ))}
-    <Captions cues={CUES} />
-    <Sound />
-  </AbsoluteFill>
-);
+export const Ep001: React.FC<EpProps> = ({timing = null, sprites = false}) => {
+  const anchors = timing?.anchors ?? ([[0, 0], [DURATION_S, DURATION_S]] as [number, number][]);
+  const {warp, inv} = makeWarp(anchors);
+  const cues = timing ? voCues(timing, warp(44.0)) : CUES;
+  return (
+    <EpCtx.Provider value={{warp, inv, mouth: timing?.mouth ?? [], sprites, timing}}>
+      <AbsoluteFill style={{background: '#000'}}>
+        <Fonts />
+        {sprites && <SpritePreload />}
+        {SHOTS.map(([a, b, C], i) => {
+          const from = Math.round(warp(a) * FPS);
+          const to = Math.round(warp(b) * FPS);
+          return (
+            <Sequence key={i} from={from} durationInFrames={Math.max(1, to - from)}>
+              <ShotCtx.Provider value={{scriptStart: a, startFrame: from}}>
+                <C />
+              </ShotCtx.Provider>
+            </Sequence>
+          );
+        })}
+        <Captions cues={cues} />
+        <Sound />
+      </AbsoluteFill>
+    </EpCtx.Provider>
+  );
+};
