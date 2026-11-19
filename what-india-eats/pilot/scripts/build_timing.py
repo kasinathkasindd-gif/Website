@@ -1,7 +1,8 @@
 """Fit EP001's animation to a real voice-over (0 credits).
 
 Usage:
-  python3 scripts/build_timing.py --vo VO_DIR [--host HOST.wav] [--sprites] [--props out/props.json]
+  python3 scripts/build_timing.py --vo VO_DIR [--host HOST.wav] [--tempo 1.15] [--max-pause 0.22] [--sprites]
+                                  [--props out/props.json]
 
 VO_DIR holds one file per caption cue: 00.wav ... 20.wav (any format ffmpeg reads).
 Writes:
@@ -26,21 +27,21 @@ import numpy as np
 
 SR = 48000
 FPS = 30
-MAX_SQUEEZE = 1.3  # on-screen action may play up to 30% faster than scripted, never more
-GAP_IN_SENTENCE = 0.10  # after a line ending in , : … (the sentence continues)
-GAP_BETWEEN = 0.22
+MAX_SQUEEZE = 1.4  # on-screen action may play up to 40% faster than scripted, never more
+GAP_IN_SENTENCE = 0.08  # after a line ending in , : … (the sentence continues)
+GAP_BETWEEN = 0.18
 LOOP_TAIL = 2.0  # the last shot rebuilds frame 1 for a seamless loop; keep its length exact
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
 # Story beats that must stay in order: (script time, label, must follow the end of this cue, hold before next line)
 EVENTS = [
-    (14.5, "meal-1 whistle", 9, 0.45),
-    (20.6, "meal-2 whistle", 10, 0.45),
+    (14.5, "meal-1 whistle", 9, 0.4),
+    (20.6, "meal-2 whistle", 10, 0.4),
     (22.6, "host: Every day!", 11, None),  # hold = host line length + 0.12
     (30.7, "meal-3 whistle", 15, 0.55),
     (39.77, "map stamp", 18, 0.0),
-    (40.0, "three-whistle sting", None, 1.45),  # the closing line starts after the third whistle
+    (40.0, "three-whistle sting", None, 1.4),  # the closing line starts as the third whistle ends
     (44.0, "cliffhanger ends", 20, 0.0),
 ]
 
@@ -69,6 +70,45 @@ def trim(x, pad=0.03):
     a = max(0, on[0] * hop - int(pad * SR))
     b = min(len(x), (on[-1] + 1) * hop + int(pad * SR))
     return x[a:b]
+
+
+def tighten_pauses(x, max_pause):
+    """Shorten silences inside a line (TTS often stretches "..." and commas) to at most max_pause seconds."""
+    hop = int(0.01 * SR)
+    db = frame_db(x, hop)
+    silent = db < max(-50.0, db.max() - 35)
+    keep = np.ones(len(x), bool)
+    k = 0
+    n = len(silent)
+    while k < n:
+        if silent[k]:
+            j = k
+            while j < n and silent[j]:
+                j += 1
+            if k > 0 and j < n and (j - k) * hop > max_pause * SR:  # interior pause only
+                cut_a = k * hop + int(max_pause * SR / 2)
+                cut_b = j * hop - int(max_pause * SR / 2)
+                keep[cut_a:cut_b] = False
+            k = j
+        else:
+            k += 1
+    return x[keep]
+
+
+def change_tempo(x, tempo):
+    """Pitch-preserving speed-up; sox's speech mode sounds cleaner than ffmpeg atempo."""
+    if abs(tempo - 1) < 1e-3:
+        return x
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as d:
+        a, b = os.path.join(d, "a.wav"), os.path.join(d, "b.wav")
+        write_wav(a, x / max(1.0, np.abs(x).max()))
+        try:
+            subprocess.run(["sox", a, b, "tempo", "-s", str(tempo)], check=True, capture_output=True)
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", a, "-filter:a", f"atempo={tempo}", b], check=True)
+        return read_audio(b)
 
 
 def level_match(x, target_db=-19.0, peak_db=-1.5):
@@ -166,6 +206,8 @@ def main():
     ap.add_argument("--vo", required=True)
     ap.add_argument("--host")
     ap.add_argument("--sprites", action="store_true")
+    ap.add_argument("--tempo", type=float, default=1.0, help="speech speed-up, e.g. 1.15")
+    ap.add_argument("--max-pause", type=float, default=0.22, help="longest silence kept inside a line (s)")
     ap.add_argument("--props", default=os.path.join(ROOT, "out", "props.json"))
     a = ap.parse_args()
 
@@ -175,13 +217,14 @@ def main():
         cand = [f for f in os.listdir(a.vo) if re.match(rf"0*{i}\.(wav|mp3|flac|ogg)$", f)]
         if not cand:
             raise SystemExit(f"missing voice line {i:02d} in {a.vo}")
-        x = level_match(trim(read_audio(os.path.join(a.vo, sorted(cand)[0]))))
+        x = trim(read_audio(os.path.join(a.vo, sorted(cand)[0])))
+        x = level_match(change_tempo(tighten_pauses(x, a.max_pause), a.tempo))
         write_wav(os.path.join(ROOT, "public", "vo", f"{i:02d}.wav"), x)
         lines.append(x)
     durs = [len(x) / SR for x in lines]
     host = None
     if a.host:
-        host = level_match(trim(read_audio(a.host)))
+        host = level_match(change_tempo(trim(read_audio(a.host)), a.tempo))
         write_wav(os.path.join(ROOT, "public", "vo", "host.wav"), host)
     host_dur = len(host) / SR if host is not None else 0.0
 
