@@ -64,3 +64,9 @@
 - [ ] Dish visuals checked against reference photos (shape, colour, vessel). Fix or regenerate if wrong.
 - [ ] Captions match the VO word for word; names are spelled as in the table.
 - [ ] Description lists the 2–4 key sources and links the data table.
+
+### Render QA (machine checks; all must pass)
+- [ ] `pilot/scripts/qa_motion.py final.mp4`: no glitch frame, and no still stretch over 0.5 s except the loop seam (which must match frame 1).
+- [ ] Speech-to-text of the **final mix** (faster-whisper `small.en`): every line present, in order, names recognisable; nothing masked by music or SFX.
+- [ ] Loudness −14 LUFS integrated, ≤ −1.5 dBTP (`master.py` prints both).
+- [ ] Contact sheet (one frame every 3.5 s): captions sit on their own shot, nothing important under the caption band, no label covered by Seetu.

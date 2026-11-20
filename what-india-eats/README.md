@@ -15,7 +15,7 @@
 | **EP001 voiced 3D cut** | ✅ 58 s, 1080×1920, −14 LUFS: 3D Seetu with drawn face and lip-flap, 21 voiced lines + host, 6 real SFX, captions synced to the voice. In your **Higgsfield library** as `ep001-leh-voiced-3d-v2.mp4`. Build: [`pilot/README.md`](pilot/README.md) |
 | EP001 review | Voice too fast; animation froze (11 still stretches, ≈ 17 s of 58 s). Fixed in the engine and applied to EP002 (EP001 not regenerated, as asked) |
 | **EP002 Changthang** | ✅ 60 s, slower voice (2.1 words/s), no-freeze motion (1 still moment of 0.5 s vs 11 in EP001), yak/herd SFX, **1.41 credits**. Script + QA: [`04-scripts/ep002-changthang-ladakh.md`](04-scripts/ep002-changthang-ladakh.md). In your **Higgsfield library** as `ep002-changthang.mp4` |
-| Skill | 📝 v0.4 draft with the review fixes, **waiting for your approval** to save: [`../.claude/skills/youtube-shorts/SKILL.md`](../.claude/skills/youtube-shorts/SKILL.md) |
+| Skill | ✅ **v1.0 approved and saved** (20 Nov 2026): [`../.claude/skills/youtube-shorts/SKILL.md`](../.claude/skills/youtube-shorts/SKILL.md). EP002's pace and motion are the standard |
 
 ## What's in here
 
